@@ -22,7 +22,6 @@ public class MainApp extends ApplicationAdapter {
 		shapeRenderer = new ShapeRenderer();
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		world = new World(20);
-
 	}
 
 	@Override
