@@ -1,32 +1,34 @@
 package com.lethan.pacman;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.io.File;
 
 public class World {
 
     private int[][] worldLayout;
     private List<Wall> wallList;
 
-    public World() {
+    public World(int wallScale) {
+        wallList = new ArrayList<Wall>();
         worldLayout = Levels.getLevel(Levels.LEVEL_1);
+
         for (int y=0; y < worldLayout.length; y++) {
             for (int x = 0; x < worldLayout[y].length; x++) {
-                System.out.print(worldLayout[y][x]);
+                if (worldLayout[y][x] == 1) wallList.add(new Wall(x,y,wallScale,wallScale));
             }
-            System.out.println();
         }
-        wallList = new ArrayList<Wall>();
     }
 
+    public void render(ShapeRenderer shapeRenderer) {
+        for (Wall wall : wallList) {
+            wall.render(shapeRenderer);
+        }
+        shapeRenderer.end();
+    }
 }
 
