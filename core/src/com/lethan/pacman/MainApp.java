@@ -13,6 +13,7 @@ public class MainApp extends ApplicationAdapter {
 
 	//Game Classes
 	World world;
+	Player player;
 
 	@Override
 	public void create () {
@@ -22,12 +23,15 @@ public class MainApp extends ApplicationAdapter {
 		shapeRenderer = new ShapeRenderer();
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		world = new World(20);
+		player = new Player(world,13.5F,23F);
 	}
 
 	@Override
 	public void render () {
+		player.move();
 		ScreenUtils.clear(0, 0, 0, 1);
 		world.render(shapeRenderer);
+		player.render(shapeRenderer);
 	}
 	
 	@Override
