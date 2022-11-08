@@ -48,6 +48,7 @@ public class MainApp extends ApplicationAdapter {
 	
 	@Override
 	public void dispose () {
+		atlas.dispose();
 		shapeRenderer.dispose();
 	}
 }
