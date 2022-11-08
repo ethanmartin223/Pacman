@@ -32,21 +32,50 @@ public class World {
         worldLayout = Levels.getLevel(level);
         for (int y=0; y < worldLayout.length; y++) {
             for (int x = 0; x < worldLayout[y].length; x++) {
-                if (worldLayout[y][x] == 1) wallList.add(new Wall(this, x,y,worldScale,worldScale));
-                if (worldLayout[y][x] == 2) pelletList.add(new Pellet(this, x,y));
-                if (worldLayout[y][x] == 3) powerPelletList.add(new PowerPellet(this, x,y));
+                if (worldLayout[y][x] == 1) wallList.add(new Wall(this, x,y));
+                if (worldLayout[y][x] == 2) {
+                    pelletList.add(new Pellet(this, x,y));
+                    worldLayout[y][x] = 0;
+                }
+                if (worldLayout[y][x] == 3) {
+                    powerPelletList.add(new PowerPellet(this, x, y));
+                    worldLayout[y][x] = 0;
+                }
             }
         }
     }
 
     public void render(ShapeRenderer shapeRenderer) {
-        for (Wall wall : wallList) wall.render(shapeRenderer);
-        for (Pellet pellet: pelletList) pellet.render(shapeRenderer);
-        for (PowerPellet powerPellet: powerPelletList) powerPellet.render(shapeRenderer);
+        for (Wall wall : wallList){
+            wall.render(shapeRenderer);
+        }
+        for (Pellet pellet: pelletList) {
+            pellet.checkIfEaten();
+            pellet.render(shapeRenderer);
+        }
+        for (PowerPellet powerPellet: powerPelletList) {
+            powerPellet.render(shapeRenderer);
+        }
     }
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public List<Pellet> getPellets() {
+        return this.pelletList;
+    }
+
+    public int[][] getLayout() {
+        return worldLayout;
+    }
+
+    public List<Wall> getWalls() {
+        return wallList;
     }
 }
 

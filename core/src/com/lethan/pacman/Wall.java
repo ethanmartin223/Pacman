@@ -8,18 +8,16 @@ public class Wall {
     int x, y, width, height;
     World world;
 
-    public Wall(World world, int x, int y, int width, int height) {
+    public Wall(World world, int x, int y) {
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
         this.world = world;
     }
 
     public void render(ShapeRenderer shapeRenderer) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLUE);
-        shapeRenderer.rect(x*this.width, y*this.height, this.width, this.height);
+        shapeRenderer.rect(x*world.getWorldScale(), y*world.getWorldScale(), world.getWorldScale(), world.getWorldScale());
         shapeRenderer.end();
     }
 
@@ -37,6 +35,10 @@ public class Wall {
 
     public int getHeight() {
         return height;
+    }
+
+    public boolean containsPoint(float x, float y) {
+        return (this.x<x && this.y<y && this.y+1>y && this.x+1>x);
     }
 
 }

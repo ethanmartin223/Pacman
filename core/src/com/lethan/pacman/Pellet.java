@@ -6,20 +6,36 @@ import com.badlogic.gdx.graphics.Color;
 public class Pellet {
 
     private World world;
-    private int x, y;
+    private float x, y;
+    private double arrayX, arrayY;
+    private boolean isEaten;
 
     public Pellet(World world, int x, int y) {
         this.world = world;
-        this.x = x;
-        this.y = y;
+        this.arrayX = x;
+        this.arrayY = y;
+        this.x = x*world.getWorldScale()+world.getWorldScale()/2F;
+        this.y = y*world.getWorldScale()+world.getWorldScale()/2F;
+        this.isEaten = false;
     }
 
     public void render(ShapeRenderer shapeRenderer) {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.WHITE);
-        shapeRenderer.circle(this.x*world.getWorldScale()+this.world.getWorldScale()/2F,
-                this.y*world.getWorldScale()+this.world.getWorldScale()/2F, world.getWorldScale()/8F);
-        shapeRenderer.end();
+        if (!isEaten) {
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(Color.WHITE);
+            shapeRenderer.circle(x, y, world.getWorldScale() / 8F);
+            shapeRenderer.end();
+        }
+    }
+
+    public void checkIfEaten() {
+        if (!isEaten) {
+            Player pacman = this.world.getPlayer();
+            double pelletDistance = Math.sqrt(Math.pow((x - pacman.getX()), 2) + Math.pow((y - pacman.getY()), 2));
+            if (pelletDistance < world.getWorldScale() / 4F) {
+                this.isEaten = true;
+            }
+        }
     }
 
 }
