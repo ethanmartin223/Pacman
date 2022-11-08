@@ -34,7 +34,7 @@ public class MainApp extends ApplicationAdapter {
 
 		world.render(shapeRenderer);
 		player.render(shapeRenderer);
-
+		player.debugRender(shapeRenderer);
 	}
 	
 	@Override

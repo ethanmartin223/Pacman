@@ -2,16 +2,19 @@ package com.lethan.pacman;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Wall {
 
     int x, y, width, height;
     World world;
+    Rectangle bounds;
 
     public Wall(World world, int x, int y) {
         this.x = x;
         this.y = y;
         this.world = world;
+        this.bounds = new Rectangle((float)x*world.getWorldScale(),(float)y*world.getWorldScale(),(float)this.world.getWorldScale(),(float)this.world.getWorldScale());
     }
 
     public void render(ShapeRenderer shapeRenderer) {
@@ -41,4 +44,7 @@ public class Wall {
         return (this.x<x && this.y<y && this.y+1>y && this.x+1>x);
     }
 
+    public Rectangle getBounds() {
+        return bounds;
+    }
 }
