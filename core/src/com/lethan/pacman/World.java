@@ -50,12 +50,28 @@ public class World {
             wall.render(shapeRenderer);
         }
         for (Pellet pellet: pelletList) {
-            pellet.checkIfEaten();
             pellet.render(shapeRenderer);
         }
         for (PowerPellet powerPellet: powerPelletList) {
             powerPellet.render(shapeRenderer);
         }
+        this.player.render(shapeRenderer);
+    }
+
+    public void update() {
+        for (Pellet pellet: pelletList) {
+            pellet.checkIfEaten();
+        }
+    }
+
+    public void debugRender(ShapeRenderer shapeRenderer) {
+        for (Pellet pellet: pelletList) {
+            pellet.debugRender(shapeRenderer);
+        }
+        for (Wall w: wallList) {
+            w.debugRender(shapeRenderer);
+        }
+        this.player.debugRender(shapeRenderer);
     }
 
     public void setPlayer(Player player) {

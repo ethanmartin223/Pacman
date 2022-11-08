@@ -21,7 +21,7 @@ public class Player {
     private float lastMoveDeltaTime;
     private double secondsBetweenMove;
     private World world;
-    private static float moveSpeed = 1F;
+    private static float moveSpeed = 2F;
     private float relX, relY;
     private int[] lastDirection;
     private Rectangle bounds;
@@ -37,7 +37,8 @@ public class Player {
         this.relX = x;
         this.relY = y;
         this.lastDirection = Player.IDLE;
-        this.bounds = new Rectangle(this.x-this.world.getWorldScale()/2F,this.y-this.world.getWorldScale()/2F,(float)this.world.getWorldScale(),(float)this.world.getWorldScale());
+        this.bounds = new Rectangle(this.x-this.world.getWorldScale()/2F,this.y-this.world.getWorldScale()/2F,
+                (float)this.world.getWorldScale(),(float)this.world.getWorldScale());
     }
 
     public float getX() {
@@ -92,7 +93,7 @@ public class Player {
 
     public void debugRender(ShapeRenderer shapeRenderer) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.setColor(Color.GREEN);
         shapeRenderer.rect(this.bounds.getX(),this.bounds.getY(),this.bounds.getWidth(),this.bounds.getHeight());
         shapeRenderer.end();
     }

@@ -24,6 +24,14 @@ public class Wall {
         shapeRenderer.end();
     }
 
+    public void debugRender(ShapeRenderer shapeRenderer) {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.BLUE);
+        shapeRenderer.rect(x * world.getWorldScale(), y * world.getWorldScale(), world.getWorldScale(), world.getWorldScale());
+        shapeRenderer.end();
+    }
+
+
     public int getX() {
         return x;
     }

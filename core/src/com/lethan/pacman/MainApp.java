@@ -29,12 +29,12 @@ public class MainApp extends ApplicationAdapter {
 	@Override
 	public void render () {
 		player.move();
+		world.update();
 
 		ScreenUtils.clear(0, 0, 0, 1);
 
-		world.render(shapeRenderer);
-		player.render(shapeRenderer);
-		player.debugRender(shapeRenderer);
+		//world.render(shapeRenderer);
+		world.debugRender(shapeRenderer);
 	}
 	
 	@Override

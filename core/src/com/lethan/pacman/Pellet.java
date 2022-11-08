@@ -28,6 +28,16 @@ public class Pellet {
         }
     }
 
+    public void debugRender(ShapeRenderer shapeRenderer) {
+        if (!isEaten) {
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(Color.RED);
+            shapeRenderer.rect(x-world.getWorldScale() / 4F, y-world.getWorldScale() / 4F,
+                    world.getWorldScale() / 2F, world.getWorldScale() / 2F);
+            shapeRenderer.end();
+        }
+    }
+
     public void checkIfEaten() {
         if (!isEaten) {
             Player pacman = this.world.getPlayer();
