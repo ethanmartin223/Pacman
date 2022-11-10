@@ -23,10 +23,9 @@ public class Wall {
         this.y = y;
         this.world = world;
         this.bounds = new Rectangle((float) x * world.getWorldScale(), (float) y * world.getWorldScale(), (float) this.world.getWorldScale(), (float) this.world.getWorldScale());
-        this.sprite = determineSprite();
     }
 
-    private Sprite determineSprite() {
+    public Sprite determineSprite() {
         int[][] l = world.getLayout();
 
         int[][] s = new int[3][3];
@@ -37,21 +36,22 @@ public class Wall {
                 else s[y + 1][x + 1] = 1;
             }
         }
-
+        boolean equal;
         for (WallType w : WallType.values()) {
-            if (Arrays.deepEquals(s, w.getLayout())) {
-                System.out.println(w.getTextureName());
-                return world.getTextureAtlas().createSprite(w.getTextureName());
+            if (HelperFunctions.arrayEqualsWithWildcard(w.getLayout(),s, 2)) {
+                sprite = world.getTextureAtlas().createSprite(w.getTextureName());
+                sprite.setSize(world.getWorldScale(), world.getWorldScale());
+                sprite.setPosition((float) x * world.getWorldScale(), (float) y * world.getWorldScale());
+                sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
+                sprite.flip(false, true);
             }
         }
-        System.out.println(world.getTextureAtlas().createSprite("0"));
-        return world.getTextureAtlas().createSprite("0");
+        return null;
     }
 
 
     public void render(SpriteBatch spriteBatch) {
         if (sprite != null) {
-            sprite.setPosition((float) x * world.getWorldScale(), (float) y * world.getWorldScale());
             spriteBatch.begin();
             sprite.draw(spriteBatch);
             spriteBatch.end();
@@ -80,10 +80,6 @@ public class Wall {
 
     public int getHeight() {
         return height;
-    }
-
-    public boolean containsPoint(float x, float y) {
-        return (this.x<x && this.y<y && this.y+1>y && this.x+1>x);
     }
 
     public Rectangle getBounds() {

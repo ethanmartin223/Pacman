@@ -1,8 +1,11 @@
 package com.lethan.pacman;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Array;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -15,6 +18,7 @@ public class World {
     private List<PowerPellet> powerPelletList;
     private int worldScale;
     private Player player;
+
     private TextureAtlas textureAtlas;
 
     public World(TextureAtlas atlas, int worldSF) {
@@ -22,9 +26,10 @@ public class World {
         wallList = new ArrayList<Wall>();
         pelletList = new ArrayList<Pellet>();
         powerPelletList = new ArrayList<PowerPellet>();
-        textureAtlas = atlas;
 
+        textureAtlas = atlas;
         this.loadLevel(Levels.LEVEL_1);
+        for (Wall w : wallList) w.determineSprite();
     }
 
     public int getWorldScale() {
@@ -51,31 +56,22 @@ public class World {
     }
 
     public void render(SpriteBatch batch) {
-        for (Wall wall : wallList){
-            wall.render(batch);
-        }
-        for (Pellet pellet: pelletList) {
-            pellet.render(batch);
-        }
-        for (PowerPellet powerPellet: powerPelletList) {
-            powerPellet.render(batch);
-        }
+        for (Wall wall : wallList) wall.render(batch);
+        for (Pellet pellet: pelletList) pellet.render(batch);
+        for (PowerPellet powerPellet: powerPelletList) powerPellet.render(batch);
         this.player.render(batch);
     }
 
     public void update() {
-        for (Pellet pellet: pelletList) {
-            pellet.checkIfEaten();
-        }
+        for (Pellet pellet: pelletList) pellet.checkIfEaten();
+        for (PowerPellet powerPellet : powerPelletList) powerPellet.checkIfEaten();
+
     }
 
     public void debugRender(ShapeRenderer shapeRenderer) {
-        for (Pellet pellet: pelletList) {
-            pellet.debugRender(shapeRenderer);
-        }
-        for (Wall w: wallList) {
-            w.debugRender(shapeRenderer);
-        }
+        for (Pellet pellet: pelletList) pellet.debugRender(shapeRenderer);
+        for (PowerPellet powerPellet: powerPelletList) powerPellet.debugRender(shapeRenderer);
+        for (Wall w: wallList) w.debugRender(shapeRenderer);
         this.player.debugRender(shapeRenderer);
     }
 
