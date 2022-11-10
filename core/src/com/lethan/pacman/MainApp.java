@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MainApp extends ApplicationAdapter {
 	ShapeRenderer shapeRenderer;
+	SpriteBatch spriteBatch;
 	OrthographicCamera camera;
 
 	//Game Classes
@@ -23,14 +24,16 @@ public class MainApp extends ApplicationAdapter {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(true);
 
-		//atlas = new TextureAtlas(Gdx.files.internal());
-		//TextureAtlas.AtlasRegion region = atlas.findRegion();
+		spriteBatch = new SpriteBatch();
+		spriteBatch.setProjectionMatrix(camera.combined);
 
 		shapeRenderer = new ShapeRenderer();
 		shapeRenderer.setProjectionMatrix(camera.combined);
 
+		atlas = new TextureAtlas(Gdx.files.internal("assets/walls.pack"));
+		TextureAtlas.AtlasRegion region = atlas.findRegion("0");
 
-		world = new World(20);
+		world = new World(atlas, 20);
 		player = new Player(world,13.5F,23F);
 
 	}
@@ -42,7 +45,7 @@ public class MainApp extends ApplicationAdapter {
 
 		ScreenUtils.clear(0, 0, 0, 1);
 
-		//world.render(shapeRenderer);
+		world.render(spriteBatch);
 		world.debugRender(shapeRenderer);
 	}
 	
@@ -50,5 +53,6 @@ public class MainApp extends ApplicationAdapter {
 	public void dispose () {
 		atlas.dispose();
 		shapeRenderer.dispose();
+		spriteBatch.dispose();
 	}
 }

@@ -1,5 +1,6 @@
 package com.lethan.pacman;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Color;
 
@@ -19,12 +20,8 @@ public class Pellet {
         this.isEaten = false;
     }
 
-    public void render(ShapeRenderer shapeRenderer) {
+    public void render(SpriteBatch batch) {
         if (!isEaten) {
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.setColor(Color.WHITE);
-            shapeRenderer.circle(x, y, world.getWorldScale() / 8F);
-            shapeRenderer.end();
         }
     }
 

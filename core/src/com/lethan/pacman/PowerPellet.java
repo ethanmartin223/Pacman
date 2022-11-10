@@ -1,6 +1,7 @@
 package com.lethan.pacman;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class PowerPellet{
@@ -16,10 +17,6 @@ public class PowerPellet{
         this.y = y*world.getWorldScale()+world.getWorldScale()/2F;
     }
 
-    public void render(ShapeRenderer shapeRenderer) {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.WHITE);
-        shapeRenderer.circle(x,y, world.getWorldScale()/4F);
-        shapeRenderer.end();
+    public void render(SpriteBatch batch) {
     }
 }

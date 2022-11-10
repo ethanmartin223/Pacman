@@ -1,5 +1,7 @@
 package com.lethan.pacman;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.List;
@@ -13,12 +15,15 @@ public class World {
     private List<PowerPellet> powerPelletList;
     private int worldScale;
     private Player player;
+    private TextureAtlas textureAtlas;
 
-    public World(int worldSF) {
+    public World(TextureAtlas atlas, int worldSF) {
         this.worldScale = worldSF;
         wallList = new ArrayList<Wall>();
         pelletList = new ArrayList<Pellet>();
         powerPelletList = new ArrayList<PowerPellet>();
+        textureAtlas = atlas;
+
         this.loadLevel(Levels.LEVEL_1);
     }
 
@@ -45,17 +50,17 @@ public class World {
         }
     }
 
-    public void render(ShapeRenderer shapeRenderer) {
+    public void render(SpriteBatch batch) {
         for (Wall wall : wallList){
-            wall.render(shapeRenderer);
+            wall.render(batch);
         }
         for (Pellet pellet: pelletList) {
-            pellet.render(shapeRenderer);
+            pellet.render(batch);
         }
         for (PowerPellet powerPellet: powerPelletList) {
-            powerPellet.render(shapeRenderer);
+            powerPellet.render(batch);
         }
-        this.player.render(shapeRenderer);
+        this.player.render(batch);
     }
 
     public void update() {
@@ -93,5 +98,7 @@ public class World {
     public List<Wall> getWalls() {
         return wallList;
     }
+
+    public TextureAtlas getTextureAtlas() {return textureAtlas;}
 }
 

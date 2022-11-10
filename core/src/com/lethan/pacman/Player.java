@@ -3,6 +3,8 @@ package com.lethan.pacman;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
@@ -25,6 +27,8 @@ public class Player {
     private float relX, relY;
     private int[] lastDirection;
     private Rectangle bounds;
+    private Sprite sprite;
+
 
     public Player(World world, float x, float y) {
         world.setPlayer(this);
@@ -84,11 +88,7 @@ public class Player {
         return true;
     }
 
-    public void render(ShapeRenderer shapeRenderer) {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.YELLOW);
-        shapeRenderer.circle(x,y, world.getWorldScale()/2F);
-        shapeRenderer.end();
+    public void render(SpriteBatch batch) {
     }
 
     public void debugRender(ShapeRenderer shapeRenderer) {
