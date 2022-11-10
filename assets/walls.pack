@@ -6,6 +6,7 @@ repeat: none
 null
   rotate: false
   size: 0,0
+  xy: 999,999
   offset: 0, 0
   index: -1
 0
