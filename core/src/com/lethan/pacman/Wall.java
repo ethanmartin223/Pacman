@@ -28,24 +28,34 @@ public class Wall {
 
     private Sprite determineSprite() {
         int[][] l = world.getLayout();
-        TextureAtlas atlas = world.getTextureAtlas();
 
-        int[][] s = new int[2][2];
-        for (int y=-1; y<=1; y++) {
+        int[][] s = new int[3][3];
+        for (int y = -1; y <= 1; y++) {
             for (int x = -1; x <= 1; x++) {
-                s[y+1][x+1] = l[this.y + y][this.x + x];
+                if ((this.y + y)>0 && (this.x + x)>0 && (this.y + y)<l.length && (this.x + x)<l[0].length)
+                    s[y + 1][x + 1] = l[this.y + y][this.x + x];
+                else s[y + 1][x + 1] = 1;
             }
         }
 
-        if (s.equals())
-
+        for (WallType w : WallType.values()) {
+            if (Arrays.deepEquals(s, w.getLayout())) {
+                System.out.println(w.getTextureName());
+                return world.getTextureAtlas().createSprite(w.getTextureName());
+            }
+        }
+        System.out.println(world.getTextureAtlas().createSprite("0"));
+        return world.getTextureAtlas().createSprite("0");
     }
 
+
     public void render(SpriteBatch spriteBatch) {
-        sprite.setPosition((float)x*world.getWorldScale(),(float)y*world.getWorldScale());
-        spriteBatch.begin();
-        sprite.draw(spriteBatch);
-        spriteBatch.end();
+        if (sprite != null) {
+            sprite.setPosition((float) x * world.getWorldScale(), (float) y * world.getWorldScale());
+            spriteBatch.begin();
+            sprite.draw(spriteBatch);
+            spriteBatch.end();
+        }
     }
 
     public void debugRender(ShapeRenderer shapeRenderer) {

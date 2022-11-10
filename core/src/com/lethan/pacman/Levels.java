@@ -38,7 +38,7 @@ public enum Levels {
 
 
     private final int[][] layout;
-    private Levels(int[][] layout){
+    Levels(int[][] layout){
         this.layout = layout;
     }
 
