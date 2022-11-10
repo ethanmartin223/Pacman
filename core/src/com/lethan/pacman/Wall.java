@@ -25,9 +25,8 @@ public class Wall {
         this.bounds = new Rectangle((float) x * world.getWorldScale(), (float) y * world.getWorldScale(), (float) this.world.getWorldScale(), (float) this.world.getWorldScale());
     }
 
-    public Sprite determineSprite() {
+    public void determineSprite() {
         int[][] l = world.getLayout();
-
         int[][] s = new int[3][3];
         for (int y = -1; y <= 1; y++) {
             for (int x = -1; x <= 1; x++) {
@@ -44,9 +43,9 @@ public class Wall {
                 sprite.setPosition((float) x * world.getWorldScale(), (float) y * world.getWorldScale());
                 sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
                 sprite.flip(false, true);
+                return;
             }
         }
-        return null;
     }
 
 
