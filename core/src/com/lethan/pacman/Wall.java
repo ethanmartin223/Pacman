@@ -3,13 +3,8 @@ package com.lethan.pacman;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Wall {
 
@@ -36,7 +31,7 @@ public class Wall {
             }
         }
         boolean equal;
-        for (WallType w : WallType.values()) {
+        for (WallSpriteLookup w : WallSpriteLookup.values()) {
             if (HelperFunctions.arrayEqualsWithWildcard(w.getLayout(),s, 2)) {
                 sprite = world.getTextureAtlas().createSprite(w.getTextureName());
                 sprite.setSize(world.getWorldScale(), world.getWorldScale());

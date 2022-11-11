@@ -30,8 +30,7 @@ public class MainApp extends ApplicationAdapter {
 		shapeRenderer = new ShapeRenderer();
 		shapeRenderer.setProjectionMatrix(camera.combined);
 
-		atlas = new TextureAtlas(Gdx.files.internal("assets/walls.pack"));
-		TextureAtlas.AtlasRegion region = atlas.findRegion("0");
+		atlas = new TextureAtlas(Gdx.files.internal("assets/sprites.pack"));
 
 		world = new World(atlas, 20);
 		player = new Player(world,13.5F,23F);

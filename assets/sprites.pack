@@ -3,6 +3,13 @@ sprites.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+null
+  rotate: false
+  xy: 999, 999
+  size: 0, 0
+  orig: 0, 0
+  offset: 0, 0
+  index: 0
 pacman_frame
   rotate: false
   xy: 1, 1
@@ -24,21 +31,21 @@ pacman_frame
   orig: 13, 13
   offset: 0, 0
   index: 3
-conrner_bottom_;eft
+corner_bottom_left
   rotate: false
   xy: 46, 6
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
-conrner_bottom_right
+corner_bottom_right
   rotate: false
   xy: 56, 6
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
-conrner_top_left
+corner_top_left
   rotate: false
   xy: 66, 6
   size: 8, 8
