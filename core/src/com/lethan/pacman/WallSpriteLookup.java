@@ -31,6 +31,30 @@ public enum WallSpriteLookup {
             {1, 1, 1}
     },"corner_top_right"),
 
+    CORNER_BOTTOM_LEFT_INNER(new int[][]{
+            {2, 0, 0},
+            {1, 1, 0},
+            {1, 1, 2}
+    },"corner_bottom_left_inner"),
+
+    CORNER_BOTTOM_RIGHT_INNER(new int[][]{
+            {0, 0, 2},
+            {0, 1, 1},
+            {2, 1, 1}
+    },"corner_bottom_right_inner"),
+
+    CORNER_TOP_LEFT_INNER(new int[][]{
+            {1, 1, 2},
+            {1, 1, 0},
+            {2, 0, 0}
+    },"corner_top_left_inner"),
+
+    CORNER_TOP_RIGHT_INNER(new int[][]{
+            {2, 1, 1},
+            {0, 1, 1},
+            {0, 0, 2}
+    },"corner_top_right_inner"),
+
     DOUBLE_WALL_CORNER_BOTTOM_LEFT(new int[][]{
             {0, 1, 0},
             {0, 1, 1},
@@ -89,8 +113,19 @@ public enum WallSpriteLookup {
             {1, 1, 2},
             {1, 1, 0},
             {1, 1, 2}
-    },"vertical_wall_left");
+    },"vertical_wall_left"),
 
+    HORIZONTAL_WALL_BOTTOM(new int[][]{
+            {2, 0, 2},
+            {1, 1, 1},
+            {1, 1, 1}
+    },"horizontal_wall_bottom"),
+
+    HORIZONTAL_WALL_TOP(new int[][]{
+            {1, 1, 1},
+            {1, 1, 1},
+            {2, 0, 2}
+    },"horizontal_wall_top");
 
     private final int[][] layout;
     private final String value;
