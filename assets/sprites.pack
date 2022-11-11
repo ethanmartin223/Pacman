@@ -1,0 +1,152 @@
+
+sprites.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+pacman_frame
+  rotate: false
+  xy: 1, 1
+  size: 13, 13
+  orig: 13, 13
+  offset: 0, 0
+  index: 1
+pacman_frame
+  rotate: false
+  xy: 16, 1
+  size: 13, 13
+  orig: 13, 13
+  offset: 0, 0
+  index: 2
+pacman_frame
+  rotate: false
+  xy: 31, 1
+  size: 13, 13
+  orig: 13, 13
+  offset: 0, 0
+  index: 3
+conrner_bottom_;eft
+  rotate: false
+  xy: 46, 6
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+conrner_bottom_right
+  rotate: false
+  xy: 56, 6
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+conrner_top_left
+  rotate: false
+  xy: 66, 6
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+corner_top_right
+  rotate: false
+  xy: 76, 6
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+double_wall_corner_bottom_left
+  rotate: false
+  xy: 86, 6
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+double_wall_corner_bottom_right
+  rotate: false
+  xy: 96, 6
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+double_wall_corner_top_left
+  rotate: false
+  xy: 106, 6
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+double_wall_corner_top_right
+  rotate: false
+  xy: 116, 6
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+double_wall_end_left
+  rotate: false
+  xy: 126, 6
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+double_wall_end_right
+  rotate: false
+  xy: 136, 6
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+horizontal_double_wall
+  rotate: false
+  xy: 146, 6
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+horizontal_wall_bottom
+  rotate: false
+  xy: 156, 6
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+horizontal_wall_top
+  rotate: false
+  xy: 166, 6
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+pellet
+  rotate: false
+  xy: 176, 6
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+power_pellet
+  rotate: false
+  xy: 186, 6
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+vertical_double_wall
+  rotate: false
+  xy: 196, 6
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+vertical_wall_left
+  rotate: false
+  xy: 206, 6
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+vertical_wall_right
+  rotate: false
+  xy: 216, 6
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
