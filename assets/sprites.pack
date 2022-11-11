@@ -1,0 +1,180 @@
+
+sprites.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+pacman_frame
+  rotate: false
+  xy: 1, 16
+  size: 13, 13
+  orig: 13, 13
+  offset: 0, 0
+  index: 1
+pacman_frame
+  rotate: false
+  xy: 1, 1
+  size: 13, 13
+  orig: 13, 13
+  offset: 0, 0
+  index: 2
+pacman_frame
+  rotate: false
+  xy: 16, 16
+  size: 13, 13
+  orig: 13, 13
+  offset: 0, 0
+  index: 3
+corner_bottom_left
+  rotate: false
+  xy: 16, 6
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+corner_bottom_left_inner
+  rotate: false
+  xy: 31, 21
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+corner_bottom_right
+  rotate: false
+  xy: 41, 21
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+corner_bottom_right_inner
+  rotate: false
+  xy: 51, 21
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+corner_top_left
+  rotate: false
+  xy: 61, 21
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+corner_top_left_inner
+  rotate: false
+  xy: 71, 21
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+corner_top_right
+  rotate: false
+  xy: 81, 21
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+corner_top_right_inner
+  rotate: false
+  xy: 91, 21
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+double_wall_corner_bottom_left
+  rotate: false
+  xy: 101, 21
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+double_wall_corner_bottom_right
+  rotate: false
+  xy: 111, 21
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+double_wall_corner_top_left
+  rotate: false
+  xy: 26, 6
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+double_wall_corner_top_right
+  rotate: false
+  xy: 36, 11
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+double_wall_end_left
+  rotate: false
+  xy: 46, 11
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+double_wall_end_right
+  rotate: false
+  xy: 56, 11
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+horizontal_double_wall
+  rotate: false
+  xy: 66, 11
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+horizontal_wall_bottom
+  rotate: false
+  xy: 76, 11
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+horizontal_wall_top
+  rotate: false
+  xy: 86, 11
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+pellet
+  rotate: false
+  xy: 96, 11
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+power_pellet
+  rotate: false
+  xy: 106, 11
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+vertical_double_wall
+  rotate: false
+  xy: 36, 1
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+vertical_wall_left
+  rotate: false
+  xy: 46, 1
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+vertical_wall_right
+  rotate: false
+  xy: 56, 1
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
