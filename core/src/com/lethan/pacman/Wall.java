@@ -33,6 +33,7 @@ public class Wall {
         boolean equal;
         for (WallSpriteLookup w : WallSpriteLookup.values()) {
             if (HelperFunctions.arrayEqualsWithWildcard(w.getLayout(),s, 2)) {
+                System.out.println(w.getTextureName());
                 sprite = world.getTextureAtlas().createSprite(w.getTextureName());
                 sprite.setSize(world.getWorldScale(), world.getWorldScale());
                 sprite.setPosition((float) x * world.getWorldScale(), (float) y * world.getWorldScale());

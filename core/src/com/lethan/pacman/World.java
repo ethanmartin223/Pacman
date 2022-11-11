@@ -65,7 +65,6 @@ public class World {
     public void update() {
         for (Pellet pellet: pelletList) pellet.checkIfEaten();
         for (PowerPellet powerPellet : powerPelletList) powerPellet.checkIfEaten();
-
     }
 
     public void debugRender(ShapeRenderer shapeRenderer) {
