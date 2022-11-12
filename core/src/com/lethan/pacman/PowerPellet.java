@@ -1,6 +1,7 @@
 package com.lethan.pacman;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -9,6 +10,7 @@ public class PowerPellet{
     float x, y;
     double arrayY,arrayX;
     boolean isEaten;
+    private Sprite sprite;
 
     public PowerPellet(World world, int x, int y) {
         this.world = world;
@@ -17,9 +19,17 @@ public class PowerPellet{
         this.isEaten = false;
         this.x = x*world.getWorldScale()+this.world.getWorldScale()/2F;
         this.y = y*world.getWorldScale()+world.getWorldScale()/2F;
+        this.sprite = world.getTextureAtlas().createSprite("power_pellet");
+        sprite.setPosition(this.x-world.getWorldScale()*.4F,this.y-world.getWorldScale()*.4F);
+        sprite.setSize(world.getWorldScale()*.8F, world.getWorldScale()*.8F);
     }
 
     public void render(SpriteBatch batch) {
+        if (!isEaten) {
+            batch.begin();
+            sprite.draw(batch);
+            batch.end();
+        }
     }
 
     public void debugRender(ShapeRenderer shapeRenderer) {
@@ -38,6 +48,7 @@ public class PowerPellet{
             double pelletDistance = Math.sqrt(Math.pow((x - pacman.getX()), 2) + Math.pow((y - pacman.getY()), 2));
             if (pelletDistance < world.getWorldScale() / 4F) {
                 this.isEaten = true;
+                pacman.addScore(50);
             }
         }
     }

@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class Player {
     private static final int[] UP = new int[] {0,-1};
     private static final int[] DOWN = new int[] {0,1};
@@ -16,6 +19,7 @@ public class Player {
     private static final int[] LEFT = new int[] {-1,0};
     private static final int[] IDLE = new int[] {0,0};
     private static final int[][] SUROUNDINGS = new int[][] {{}};
+    private static final float ANIMATION_CHANGE_DELAY = .05F;
 
     private float y;
     private float x;
@@ -27,8 +31,11 @@ public class Player {
     private float relX, relY;
     private int[] lastDirection;
     private Rectangle bounds;
-    private Sprite sprite;
-
+    private ArrayList<Sprite> sprites;
+    private int animationCycle = 0;
+    private float timeSinceLaseAnimationChange;
+    private int animationDirection;
+    private int score;
 
     public Player(World world, float x, float y) {
         world.setPlayer(this);
@@ -41,8 +48,19 @@ public class Player {
         this.relX = x;
         this.relY = y;
         this.lastDirection = Player.IDLE;
+        this.timeSinceLaseAnimationChange = 0;
         this.bounds = new Rectangle(this.x-this.world.getWorldScale()/2F,this.y-this.world.getWorldScale()/2F,
                 (float)this.world.getWorldScale(),(float)this.world.getWorldScale());
+        this.score = 0;
+
+        this.animationDirection = 1;
+        this.sprites = new ArrayList<Sprite>();
+        for (int i=0; i<3; i++) {
+            sprites.add(world.getTextureAtlas().createSprite("pacman_frame_"+(i+1)));
+            sprites.get(i).setSize(world.getWorldScale(), world.getWorldScale());
+            sprites.get(i).setOrigin(world.getWorldScale()/2F, world.getWorldScale()/2F);
+
+        }
     }
 
     public float getX() {
@@ -89,6 +107,27 @@ public class Player {
     }
 
     public void render(SpriteBatch batch) {
+        if (timeSinceLaseAnimationChange > Player.ANIMATION_CHANGE_DELAY) {
+            animationCycle+=animationDirection;
+            if (animationCycle >= sprites.size() || animationCycle <= 0) {
+                animationDirection = -animationDirection;
+                animationCycle = (animationCycle>=sprites.size())?sprites.size()-2:0;
+            }
+            timeSinceLaseAnimationChange = 0;
+        } else {
+            timeSinceLaseAnimationChange += Gdx.graphics.getDeltaTime();
+        }
+        Sprite currentSprite = this.sprites.get(animationCycle);
+
+        if (direction == Player.LEFT) currentSprite.setRotation(180);
+        if (direction == Player.RIGHT) currentSprite.setRotation(0);
+        if (direction == Player.UP) currentSprite.setRotation(270);
+        if (direction == Player.DOWN) currentSprite.setRotation(90);
+
+        batch.begin();
+        currentSprite.setPosition(x- world.getWorldScale()/2F,y- world.getWorldScale()/2F);
+        currentSprite.draw(batch);
+        batch.end();
     }
 
     public void debugRender(ShapeRenderer shapeRenderer) {
@@ -98,4 +137,11 @@ public class Player {
         shapeRenderer.end();
     }
 
+    public Integer getScore() {
+        return this.score;
+    }
+
+    public void addScore(int i) {
+        this.score += i;
+    }
 }

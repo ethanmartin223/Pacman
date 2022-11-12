@@ -10,7 +10,7 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setTitle("pacman");
-		config.setWindowedMode(560,620);
+		config.setWindowedMode(560,650);
 		new Lwjgl3Application(new MainApp(), config);
 	}
 }

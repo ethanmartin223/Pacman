@@ -1,5 +1,6 @@
 package com.lethan.pacman;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Color;
@@ -10,6 +11,7 @@ public class Pellet {
     private float x, y;
     private double arrayX, arrayY;
     private boolean isEaten;
+    private Sprite sprite;
 
     public Pellet(World world, int x, int y) {
         this.world = world;
@@ -18,10 +20,16 @@ public class Pellet {
         this.x = x*world.getWorldScale()+world.getWorldScale()/2F;
         this.y = y*world.getWorldScale()+world.getWorldScale()/2F;
         this.isEaten = false;
+        this.sprite = world.getTextureAtlas().createSprite("pellet");
+        sprite.setPosition(this.x-world.getWorldScale()/2F,this.y-world.getWorldScale()/2F);
+        sprite.setSize(world.getWorldScale(), world.getWorldScale());
     }
 
     public void render(SpriteBatch batch) {
         if (!isEaten) {
+            batch.begin();
+            sprite.draw(batch);
+            batch.end();
         }
     }
 
@@ -41,6 +49,7 @@ public class Pellet {
             double pelletDistance = Math.sqrt(Math.pow((x - pacman.getX()), 2) + Math.pow((y - pacman.getY()), 2));
             if (pelletDistance < world.getWorldScale() / 4F) {
                 this.isEaten = true;
+                pacman.addScore(10);
             }
         }
     }

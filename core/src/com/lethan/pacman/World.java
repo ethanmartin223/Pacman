@@ -60,6 +60,7 @@ public class World {
         for (Pellet pellet: pelletList) pellet.render(batch);
         for (PowerPellet powerPellet: powerPelletList) powerPellet.render(batch);
         this.player.render(batch);
+        this.player.getScore();
     }
 
     public void update() {

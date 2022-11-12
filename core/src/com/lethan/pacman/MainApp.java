@@ -4,20 +4,21 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MainApp extends ApplicationAdapter {
-	ShapeRenderer shapeRenderer;
-	SpriteBatch spriteBatch;
-	OrthographicCamera camera;
+	private ShapeRenderer shapeRenderer;
+	private SpriteBatch spriteBatch;
+	private OrthographicCamera camera;
+	private TextureAtlas atlas;
 
 	//Game Classes
-	World world;
-	Player player;
-	TextureAtlas atlas;
+	private World world;
+	private Player player;
 
 	@Override
 	public void create () {
