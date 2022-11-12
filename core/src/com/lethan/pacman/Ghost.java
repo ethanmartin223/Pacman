@@ -36,6 +36,7 @@ public class Ghost {
 
     private int[][] getPath(int x, int y) {
         int[][] l = world.getLayout();
+
         return new int[][]{{0, 0}};
     }
 

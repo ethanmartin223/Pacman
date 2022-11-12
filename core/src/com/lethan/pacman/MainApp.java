@@ -19,6 +19,7 @@ public class MainApp extends ApplicationAdapter {
 	//Game Classes
 	private World world;
 	private Player player;
+	private Ghost blinky, inky, pinky, clyde;
 
 	@Override
 	public void create () {
@@ -35,6 +36,7 @@ public class MainApp extends ApplicationAdapter {
 
 		world = new World(atlas, 20);
 		player = new Player(world,13.5F,23F);
+		clyde = new Clyde(world,1,29);
 
 	}
 
