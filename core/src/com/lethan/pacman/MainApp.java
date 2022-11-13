@@ -49,6 +49,8 @@ public class MainApp extends ApplicationAdapter {
 
 		world.render(spriteBatch);
 		//world.debugRender(shapeRenderer);
+
+		clyde.getPath((int)clyde.getX(), (int)clyde.getY(), (int)player.getX(), (int)player.getY());
 	}
 	
 	@Override
