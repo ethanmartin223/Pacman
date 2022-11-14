@@ -61,8 +61,8 @@ public class Ghost {
         if (lastMoveDeltaTime >= secondsBetweenMove) {
             lastMoveDeltaTime = 0;
             Player pacman = world.getPlayer();
-            List<PathfindingEngine.Point> l = world.getPath((int) relX, (int) relY, (int)pacman.getRelX(), (int) pacman.getRelY());
-            System.out.println(relX+" "+relY);
+            List<PathfindingEngine.Point> l = world.getPath((int) relX, (int) relY, (int)(pacman.getRelX()+.5), (int)(pacman.getRelY()+.5));
+            System.out.println(relX+" "+relY+" pacman: "+(int)(pacman.getRelX()+.5)+" "+(int)(pacman.getRelY()+.5));
             if (l != null) {
                 System.out.println(Arrays.deepToString(l.toArray()));
                 double xDiff = relX>l.get(0).x?relX-(l.get(0).x):(l.get(0).x)-relX;
