@@ -144,4 +144,12 @@ public class Player {
     public void addScore(int i) {
         this.score += i;
     }
+
+    public int getRelY() {
+        return (int) relY;
+    }
+
+    public int getRelX() {
+        return (int) relX;
+    }
 }

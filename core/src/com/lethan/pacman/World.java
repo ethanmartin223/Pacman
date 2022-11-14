@@ -18,6 +18,7 @@ public class World {
     private List<PowerPellet> powerPelletList;
     private int worldScale;
     private Player player;
+    private PathfindingEngine pathfinder;
 
     private TextureAtlas textureAtlas;
 
@@ -29,6 +30,7 @@ public class World {
 
         textureAtlas = atlas;
         this.loadLevel(Levels.LEVEL_1);
+        pathfinder = new PathfindingEngine(worldLayout);
         for (Wall w : wallList) w.determineSprite();
     }
 
@@ -59,8 +61,6 @@ public class World {
         for (Wall wall : wallList) wall.render(batch);
         for (Pellet pellet: pelletList) pellet.render(batch);
         for (PowerPellet powerPellet: powerPelletList) powerPellet.render(batch);
-        this.player.render(batch);
-        this.player.getScore();
     }
 
     public void update() {
@@ -96,5 +96,13 @@ public class World {
     }
 
     public TextureAtlas getTextureAtlas() {return textureAtlas;}
+
+    public PathfindingEngine getPathfinder() {
+        return pathfinder;
+    }
+
+    public List<PathfindingEngine.Point> getPath(int sX, int sY, int eX, int eY) {
+        return pathfinder.getPath(sX,sY,eX,eY);
+    }
 }
 
