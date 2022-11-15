@@ -36,24 +36,23 @@ public class Wall {
         int[][] s = new int[3][3];
         for (int y = -1; y <= 1; y++) {
             for (int x = -1; x <= 1; x++) {
-                if ((this.y + y)>0 && (this.x + x)>0 && (this.y + y)<l.length && (this.x + x)<l[0].length)
+                if ((this.y + y) > 0 && (this.x + x) > 0 && (this.y + y) < l.length && (this.x + x) < l[0].length)
                     s[y + 1][x + 1] = l[this.y + y][this.x + x];
                 else s[y + 1][x + 1] = 1;
             }
         }
         boolean equal;
         for (WallSpriteLookup w : WallSpriteLookup.values()) {
-            if (arrayEqualsWithWildcard(w.getLayout(),s, 2)) {
+            if (arrayEqualsWithWildcard(w.getLayout(), s, 2)) {
                 sprite = world.getTextureAtlas().createSprite(w.getTextureName());
                 sprite.setSize(world.getWorldScale(), world.getWorldScale());
                 sprite.setPosition((float) x * world.getWorldScale(), (float) y * world.getWorldScale());
-                sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
+                sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
                 sprite.flip(false, true);
                 return;
             }
         }
     }
-
 
     public void render(SpriteBatch spriteBatch) {
         if (sprite != null) {
@@ -69,7 +68,6 @@ public class Wall {
         shapeRenderer.rect(x * world.getWorldScale(), y * world.getWorldScale(), world.getWorldScale(), world.getWorldScale());
         shapeRenderer.end();
     }
-
 
     public int getX() {
         return x;

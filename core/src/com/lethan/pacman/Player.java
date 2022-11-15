@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Player {
     private static final int[] UP = new int[] {0,-1};
@@ -27,7 +26,7 @@ public class Player {
     private float lastMoveDeltaTime;
     private double secondsBetweenMove;
     private World world;
-    private static float moveSpeed = 2.5F;
+    private static float MOVE_SPEED = 2.5F;
     private float relX, relY;
     private int[] lastDirection;
     private Rectangle bounds;
@@ -36,6 +35,7 @@ public class Player {
     private float timeSinceLaseAnimationChange;
     private int animationDirection;
     private int score;
+    private int lives;
     private int[] nextDirection;
 
     public Player(World world, float x, float y) {
@@ -53,6 +53,7 @@ public class Player {
         this.bounds = new Rectangle(this.x-this.world.getWorldScale()/2F,this.y-this.world.getWorldScale()/2F,
                 (float)this.world.getWorldScale(),(float)this.world.getWorldScale());
         this.score = 0;
+        this.lives = 4;
         this.nextDirection = Player.RIGHT;
 
         this.animationDirection = 1;
@@ -81,11 +82,20 @@ public class Player {
             if (this.willNotCollide()) {
                 lastMoveDeltaTime = 0;
                 lastDirection = this.direction;
-                this.x += this.direction[0] * moveSpeed;
-                this.y += this.direction[1] * moveSpeed;
-                this.relX += (this.direction[0] * moveSpeed) / this.world.getWorldScale();
-                this.relY += (this.direction[1] * moveSpeed) / this.world.getWorldScale();
+                this.x += this.direction[0] * MOVE_SPEED;
+                this.y += this.direction[1] * MOVE_SPEED;
+                this.relX += (this.direction[0] * MOVE_SPEED) / this.world.getWorldScale();
+                this.relY += (this.direction[1] * MOVE_SPEED) / this.world.getWorldScale();
+                if (this.x < -this.world.getWorldScale()+Player.MOVE_SPEED*2) {
+                    this.x = world.getLayout()[0].length*world.getWorldScale();
+                    this.relX = (this.x) / this.world.getWorldScale();
+                }
+                if (this.x > this.world.getLayout()[0].length*this.world.getWorldScale()+this.world.getWorldScale()-Player.MOVE_SPEED*2) {
+                    this.x = -world.getWorldScale();
+                    this.relX = (this.x) / this.world.getWorldScale();
+                }
                 this.bounds.set(this.x-this.world.getWorldScale()/2F,this.y-this.world.getWorldScale()/2F,(float)this.world.getWorldScale(),(float)this.world.getWorldScale());
+
             }
         } else lastMoveDeltaTime += Gdx.graphics.getDeltaTime();
     }
@@ -139,8 +149,8 @@ public class Player {
     }
 
     public boolean willNotCollide() {
-        this.bounds.set(this.x-this.world.getWorldScale()/2F+(this.direction[0] * moveSpeed) / this.world.getWorldScale(),
-                this.y-this.world.getWorldScale()/2F+(this.direction[1] * moveSpeed) / this.world.getWorldScale(),
+        this.bounds.set(this.x-this.world.getWorldScale()/2F+(this.direction[0] * MOVE_SPEED) / this.world.getWorldScale(),
+                this.y-this.world.getWorldScale()/2F+(this.direction[1] * MOVE_SPEED) / this.world.getWorldScale(),
                 (float)this.world.getWorldScale(),(float)this.world.getWorldScale());
         for (Wall w : world.getWalls()) {
             if (Intersector.overlaps(w.getBounds(),this.bounds)) {
