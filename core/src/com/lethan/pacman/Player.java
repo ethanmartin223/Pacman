@@ -27,7 +27,7 @@ public class Player {
     private float lastMoveDeltaTime;
     private double secondsBetweenMove;
     private World world;
-    private static float moveSpeed = 2F;
+    private static float moveSpeed = 2.5F;
     private float relX, relY;
     private int[] lastDirection;
     private Rectangle bounds;
@@ -36,13 +36,14 @@ public class Player {
     private float timeSinceLaseAnimationChange;
     private int animationDirection;
     private int score;
+    private int[] nextDirection;
 
     public Player(World world, float x, float y) {
         world.setPlayer(this);
         this.world = world;
         this.x = x*world.getWorldScale()+this.world.getWorldScale()/2F;
         this.y = y*world.getWorldScale()+this.world.getWorldScale()/2F;
-        this.direction = new int[] {0,0};
+        this.direction = Player.IDLE;
         this.secondsBetweenMove = .01;
         this.lastMoveDeltaTime = 0;
         this.relX = x;
@@ -52,6 +53,7 @@ public class Player {
         this.bounds = new Rectangle(this.x-this.world.getWorldScale()/2F,this.y-this.world.getWorldScale()/2F,
                 (float)this.world.getWorldScale(),(float)this.world.getWorldScale());
         this.score = 0;
+        this.nextDirection = Player.RIGHT;
 
         this.animationDirection = 1;
         this.sprites = new ArrayList<Sprite>();
@@ -59,7 +61,6 @@ public class Player {
             sprites.add(world.getTextureAtlas().createSprite("pacman_frame_"+(i+1)));
             sprites.get(i).setSize(world.getWorldScale(), world.getWorldScale());
             sprites.get(i).setOrigin(world.getWorldScale()/2F, world.getWorldScale()/2F);
-
         }
     }
 
@@ -74,6 +75,9 @@ public class Player {
     public void move() {
         this.getInput();
         if (lastMoveDeltaTime >= secondsBetweenMove) {
+            lastDirection = direction;
+            direction = nextDirection;
+            if (!willNotCollide()) direction = lastDirection;
             if (this.willNotCollide()) {
                 lastMoveDeltaTime = 0;
                 lastDirection = this.direction;
@@ -87,11 +91,51 @@ public class Player {
     }
 
     public void getInput() {
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) direction = Player.UP;
-        else if(Gdx.input.isKeyPressed(Input.Keys.S)) direction = Player.DOWN;
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) direction = Player.LEFT;
-        else if(Gdx.input.isKeyPressed(Input.Keys.D)) direction = Player.RIGHT;
-        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) direction = Player.IDLE;
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            direction = Player.UP;
+            if (lastDirection == Player.DOWN){
+                nextDirection = Player.UP;
+                return;
+            }
+            if (!willNotCollide() && lastDirection != Player.DOWN) {
+                direction = lastDirection;
+                nextDirection = Player.UP;
+            }
+        }
+        else if(Gdx.input.isKeyPressed(Input.Keys.S)) {
+            direction = Player.DOWN;
+            if (lastDirection == Player.UP){
+                nextDirection = Player.DOWN;
+                return;
+            }
+            if (!willNotCollide() && lastDirection != Player.UP) {
+                direction = lastDirection;
+                nextDirection = Player.DOWN;
+            }
+        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            direction = Player.LEFT;
+            if (lastDirection == Player.RIGHT){
+                nextDirection = Player.LEFT;
+                return;
+            }
+            if (!willNotCollide() && lastDirection != Player.RIGHT) {
+                direction = lastDirection;
+                nextDirection = Player.LEFT;
+            }
+        }
+        else if(Gdx.input.isKeyPressed(Input.Keys.D)) {
+            direction = Player.RIGHT;
+            if (lastDirection == Player.LEFT){
+                nextDirection = Player.RIGHT;
+                return;
+            }
+            if (!willNotCollide()) {
+                direction = lastDirection;
+                nextDirection = Player.RIGHT;
+            }
+
+        }
     }
 
     public boolean willNotCollide() {
