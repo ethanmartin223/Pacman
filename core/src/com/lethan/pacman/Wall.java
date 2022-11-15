@@ -20,6 +20,17 @@ public class Wall {
         this.bounds = new Rectangle((float) x * world.getWorldScale(), (float) y * world.getWorldScale(), (float) this.world.getWorldScale(), (float) this.world.getWorldScale());
     }
 
+    public static boolean arrayEqualsWithWildcard(int[][] arr1, int[][] arr2, int wildcard) {
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 3; x++) {
+                if (!((arr1[y][x] == arr2[y][x]) || (arr1[y][x] == 2) || (arr2[y][x] == 2))) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public void determineSprite() {
         int[][] l = world.getLayout();
         int[][] s = new int[3][3];
@@ -32,7 +43,7 @@ public class Wall {
         }
         boolean equal;
         for (WallSpriteLookup w : WallSpriteLookup.values()) {
-            if (HelperFunctions.arrayEqualsWithWildcard(w.getLayout(),s, 2)) {
+            if (arrayEqualsWithWildcard(w.getLayout(),s, 2)) {
                 sprite = world.getTextureAtlas().createSprite(w.getTextureName());
                 sprite.setSize(world.getWorldScale(), world.getWorldScale());
                 sprite.setPosition((float) x * world.getWorldScale(), (float) y * world.getWorldScale());
