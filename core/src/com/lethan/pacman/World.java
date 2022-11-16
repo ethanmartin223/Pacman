@@ -1,5 +1,6 @@
 package com.lethan.pacman;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
@@ -19,10 +20,12 @@ public class World {
     private int worldScale;
     private Player player;
     private PathfindingEngine pathfinder;
+    private float animationTime;
 
     private TextureAtlas textureAtlas;
 
     public World(TextureAtlas atlas, int worldSF) {
+        this.animationTime = 0;
         this.worldScale = worldSF;
         wallList = new ArrayList<Wall>();
         pelletList = new ArrayList<Pellet>();
@@ -36,6 +39,10 @@ public class World {
 
     public int getWorldScale() {
         return worldScale;
+    }
+
+    public float getAnimationTime() {
+        return animationTime;
     }
 
     public void loadLevel(Levels level) {
@@ -61,6 +68,7 @@ public class World {
         for (Wall wall : wallList) wall.render(batch);
         for (Pellet pellet: pelletList) pellet.render(batch);
         for (PowerPellet powerPellet: powerPelletList) powerPellet.render(batch);
+        this.animationTime += Gdx.graphics.getDeltaTime();
     }
 
     public void update() {

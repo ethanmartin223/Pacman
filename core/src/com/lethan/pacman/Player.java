@@ -59,7 +59,7 @@ public class Player {
         this.animationDirection = 1;
         this.sprites = new ArrayList<Sprite>();
         for (int i=0; i<3; i++) {
-            sprites.add(world.getTextureAtlas().createSprite("pacman_frame_"+(i+1)));
+            sprites.add(world.getTextureAtlas().createSprite("pacman_frame",i+1));
             sprites.get(i).setSize(world.getWorldScale(), world.getWorldScale());
             sprites.get(i).setOrigin(world.getWorldScale()/2F, world.getWorldScale()/2F);
         }

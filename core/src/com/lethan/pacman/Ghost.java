@@ -1,8 +1,10 @@
 package com.lethan.pacman;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.*;
@@ -14,14 +16,20 @@ public class Ghost {
     private Map<String, Sprite> sprites;
     private String currentSprite;
     private final String name;
-
-    //const
-    private static final int[][] VALID_MOVES = new int[][]{{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
     private float lastMoveDeltaTime;
     private double secondsBetweenMove;
     private float moveSpeed;
+    private int[] nextLocation;
+
+    private final Animation<TextureRegion> UP_ANIMATION;
+    
+    //const
+    private static final int[][] VALID_MOVES = new int[][]{{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
+    
 
     public Ghost(World world, float x, float y) {
+        UP_ANIMATION = new Animation<TextureRegion>(0.1f, world.getTextureAtlas().findRegions("blinky_up"));
+
         this.secondsBetweenMove =.4;
         this.world = world;
         this.relX = (int)x;
@@ -36,7 +44,9 @@ public class Ghost {
 
     public void render(SpriteBatch spriteBatch) {
         spriteBatch.begin();
-        sprites.get(currentSprite).draw(spriteBatch);
+        spriteBatch.draw(UP_ANIMATION.getKeyFrame(world.getAnimationTime(),true),
+                x+world.getWorldScale()*1.25F, y+world.getWorldScale()*1.25F, -world.getWorldScale()*1.5F,
+                -world.getWorldScale()*1.5F);
         spriteBatch.end();
     }
 

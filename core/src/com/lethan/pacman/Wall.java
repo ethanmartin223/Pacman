@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
+import java.util.Objects;
+
 public class Wall {
 
     int x, y, width, height;
@@ -43,7 +45,7 @@ public class Wall {
         }
         boolean equal;
         for (WallSpriteLookup w : WallSpriteLookup.values()) {
-            if (arrayEqualsWithWildcard(w.getLayout(), s, 2)) {
+            if (arrayEqualsWithWildcard(w.getLayout(), s, 2) && !Objects.equals(w.getTextureName(), "null")) {
                 sprite = world.getTextureAtlas().createSprite(w.getTextureName());
                 sprite.setSize(world.getWorldScale(), world.getWorldScale());
                 sprite.setPosition((float) x * world.getWorldScale(), (float) y * world.getWorldScale());
