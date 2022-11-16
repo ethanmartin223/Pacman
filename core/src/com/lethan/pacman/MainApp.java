@@ -50,12 +50,11 @@ public class MainApp extends ApplicationAdapter {
 
 		ScreenUtils.clear(0, 0, 0, 1);
 
-		world.render(spriteBatch);
-		world.debugRender(shapeRenderer);
+		//world.render(spriteBatch);
 		player.render(spriteBatch);
-		blinky.render(spriteBatch);
+		//blinky.render(spriteBatch);
+		world.debugRender(shapeRenderer);
 		blinky.debugRender(shapeRenderer);
-
 	}
 	
 	@Override
