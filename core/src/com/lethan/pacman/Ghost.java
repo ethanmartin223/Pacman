@@ -56,7 +56,7 @@ public class Ghost {
         this.y = y*world.getWorldScale();
         this.x = x*world.getWorldScale();
         this.sprites = null;
-        this.moveSpeed = .2F;
+        this.moveSpeed = .1F;
         this.name = this.getClass().getSimpleName().toLowerCase();
         this.currentSprite = name+"_idle";
         this.bounds = new Rectangle(this.x-this.world.getWorldScale()/2F,this.y-this.world.getWorldScale()/2F,
@@ -128,10 +128,8 @@ public class Ghost {
                     relX += moveSpeed*direction[0];
                     relY += moveSpeed*direction[1];
                 } else {
-                    if (direction == Ghost.UP) relY = (float) Math.ceil(relY);
-                    if (direction == Ghost.LEFT) relX = (float) Math.round(relX);
-                    if (direction == Ghost.DOWN) relY = (float) Math.floor(relY);
-                    if (direction == Ghost.RIGHT) relX = (float) Math.round(relX);
+                    relX = Math.round(relX);
+                    relY = Math.round(relY);
 
                     if (l.get(0).x < relX) direction = Ghost.LEFT;
                     else if (l.get(0).x > relX) direction = Ghost.RIGHT;
