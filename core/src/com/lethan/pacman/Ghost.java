@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 
 import java.util.List;
@@ -80,7 +81,7 @@ public class Ghost {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(.7F,.5F,.8F,1);
         Player pacman = world.getPlayer();
-        List<PathfindingEngine.Point> l = world.getPath((int) relX, (int) relY, (int)(pacman.getRelX()+.5) , (int)(pacman.getRelY()+.5));
+        List<PathfindingEngine.Point> l = world.getPath((int)( relX+.5), (int) (relY+.5), (int)(pacman.getRelX()+.5) , (int)(pacman.getRelY()+.5));
         if (l == null) l = world.getPath((int) relX, (int) relY, (int)(pacman.getRelX()+.5)+1 , (int)(pacman.getRelY()+.5)+1);
         if (l == null) l = world.getPath((int) relX, (int) relY, (int)(pacman.getRelX()+.5)-1 , (int)(pacman.getRelY()+.5)-1);
         if (l!=null) {
@@ -102,30 +103,32 @@ public class Ghost {
 
             // "possible" bottleneck here.
             // change to if player x,y is not a wall, don't bother running alg first
-            List<PathfindingEngine.Point> l = world.getPath((int) relX, (int) relY, (int)(pacman.getRelX()+.5) , (int)(pacman.getRelY()+.5));
-            if (l == null) l = world.getPath((int) relX, (int) relY, (int)(pacman.getRelX()+.5)+1 , (int)(pacman.getRelY()+.5)+1);
-            if (l == null) l = world.getPath((int) relX, (int) relY, (int)(pacman.getRelX()+.5)-1 , (int)(pacman.getRelY()+.5)-1);
+            List<PathfindingEngine.Point> l = world.getPath((int) (relX), (int) (relY), (int)(pacman.getRelX()+.5) , (int)(pacman.getRelY()+.5));
+            if (l == null)
+                l = world.getPath((int) (relX+1), (int) (relY+1), (int)(pacman.getRelX()+.5)+1 , (int)(pacman.getRelY()+.5)+ 1);
+            if (l == null)
+                l = world.getPath((int) (relX - 1), (int) (relY - 1), (int) (pacman.getRelX() + .5) - 1, (int) (pacman.getRelY() + .5) - 1);
+
             // -----------------
             if (l != null) {
-                if (l.get(0).x > relX) {
+                if (l.get(0).x > (int)(relX)) {
                     relX+=moveSpeed;
                     direction = Ghost.LEFT;
                 }
-                else if (l.get(0).x < relX){
+                else if (l.get(0).x < (int)(relX)){
                     relX-=moveSpeed;
                     direction = Ghost.RIGHT;
                 }
-                else if (l.get(0).y > relY) {
+                else if (l.get(0).y > (int)(relY)) {
                     relY+=moveSpeed;
                     direction = Ghost.DOWN;
                 }
-                else if (l.get(0).y < relY){
-                    relY-=moveSpeed;
+                else if (l.get(0).y < (int)(relY)) {
+                    relY -= moveSpeed;
                     direction = Ghost.UP;
                 }
-
-                this.x = (float) (relX * this.world.getWorldScale());
-                this.y = (float) (relY * this.world.getWorldScale());
+                this.x = ((relX) * this.world.getWorldScale());
+                this.y = ((relY) * this.world.getWorldScale());
                 this.bounds.set(this.x-this.world.getWorldScale()/2F,this.y-this.world.getWorldScale()/2F,(float)this.world.getWorldScale(),(float)this.world.getWorldScale());
             }
         } else lastMoveDeltaTime += Gdx.graphics.getDeltaTime();
@@ -138,4 +141,5 @@ public class Ghost {
     public float getX() {
         return x;
     }
+
 }
