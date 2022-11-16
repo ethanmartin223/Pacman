@@ -86,11 +86,11 @@ public class Player {
                 this.y += this.direction[1] * MOVE_SPEED;
                 this.relX += (this.direction[0] * MOVE_SPEED) / this.world.getWorldScale();
                 this.relY += (this.direction[1] * MOVE_SPEED) / this.world.getWorldScale();
-                if (this.x < -this.world.getWorldScale()+Player.MOVE_SPEED*2) {
+                if (this.x < -this.world.getWorldScale()) {
                     this.x = world.getLayout()[0].length*world.getWorldScale();
                     this.relX = (this.x) / this.world.getWorldScale();
                 }
-                if (this.x > this.world.getLayout()[0].length*this.world.getWorldScale()+this.world.getWorldScale()-Player.MOVE_SPEED*2) {
+                if (this.x > this.world.getLayout()[0].length*this.world.getWorldScale()+this.world.getWorldScale()) {
                     this.x = -world.getWorldScale();
                     this.relX = (this.x) / this.world.getWorldScale();
                 }

@@ -6,12 +6,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 public class Ghost {
     private World world;
-    private double relX, relY;
+    private float relX, relY;
     private float x,y;
     private Map<String, Sprite> sprites;
     private String currentSprite;
@@ -20,6 +22,7 @@ public class Ghost {
     private double secondsBetweenMove;
     private float moveSpeed;
     private int[] nextLocation;
+    private Rectangle bounds;
 
     private final Animation<TextureRegion> UP_ANIMATION;
     
@@ -30,16 +33,19 @@ public class Ghost {
     public Ghost(World world, float x, float y) {
         UP_ANIMATION = new Animation<TextureRegion>(0.1f, world.getTextureAtlas().findRegions("blinky_up"));
 
-        this.secondsBetweenMove =.4;
+        this.secondsBetweenMove =.01;
         this.world = world;
         this.relX = (int)x;
         this.relY = (int)y;
         this.y = y*world.getWorldScale();
         this.x = x*world.getWorldScale();
         this.sprites = null;
-        this.moveSpeed = 1.5F;
+        this.moveSpeed = .1F;
         this.name = this.getClass().getSimpleName().toLowerCase();
         this.currentSprite = name+"_idle";
+        this.bounds = new Rectangle(this.x-this.world.getWorldScale()/2F,this.y-this.world.getWorldScale()/2F,
+                (float)this.world.getWorldScale(),(float)this.world.getWorldScale());
+
     }
 
     public void render(SpriteBatch spriteBatch) {
@@ -63,9 +69,9 @@ public class Ghost {
             }
         }
         shapeRenderer.end();*/
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(1,0,0,1);
-        shapeRenderer.rect(this.x, this.y, world.getWorldScale(), world.getWorldScale());
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(0,1,1,1);
+        shapeRenderer.rect(this.x,this.y,(float)this.world.getWorldScale(),(float)this.world.getWorldScale());
         shapeRenderer.end();
     }
 
@@ -75,16 +81,20 @@ public class Ghost {
             Player pacman = world.getPlayer();
 
             // "possible" bottleneck here.
+            // change to if player x,y is not a wall, don't bother running alg first
             List<PathfindingEngine.Point> l = world.getPath((int) relX, (int) relY, (int)(pacman.getRelX()+.5) , (int)(pacman.getRelY()+.5));
             if (l == null) l = world.getPath((int) relX, (int) relY, (int)(pacman.getRelX()+.5)+1 , (int)(pacman.getRelY()+.5)+1);
             if (l == null) l = world.getPath((int) relX, (int) relY, (int)(pacman.getRelX()+.5)-1 , (int)(pacman.getRelY()+.5)-1);
             // -----------------
-
             if (l != null) {
-                this.x = l.get(0).x* this.world.getWorldScale();
-                this.relX = l.get(0).x;
-                this.y = l.get(0).y* this.world.getWorldScale();
-                this.relY = l.get(0).y;
+                if (l.get(0).x > relX) relX+=moveSpeed;
+                else if (l.get(0).x < relX) relX-=moveSpeed;
+                else if (l.get(0).y > relY) relY+=moveSpeed;
+                else if (l.get(0).y < relY) relY-=moveSpeed;
+
+                this.x = (float) (relX * this.world.getWorldScale());
+                this.y = (float) (relY * this.world.getWorldScale());
+                this.bounds.set(this.x-this.world.getWorldScale()/2F,this.y-this.world.getWorldScale()/2F,(float)this.world.getWorldScale(),(float)this.world.getWorldScale());
             }
         } else lastMoveDeltaTime += Gdx.graphics.getDeltaTime();
     }
