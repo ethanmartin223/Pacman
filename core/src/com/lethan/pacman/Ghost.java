@@ -49,7 +49,7 @@ public class Ghost {
         DOWN_ANIMATION = new Animation<TextureRegion>(0.1f, world.getTextureAtlas().findRegions("blinky_down"));
         RIGHT_ANIMATION = new Animation<TextureRegion>(0.1f, world.getTextureAtlas().findRegions("blinky_right"));
 
-        this.secondsBetweenMove =.01;
+        this.secondsBetweenMove =.1;
         this.world = world;
         this.relX = x;
         this.relY = y;
@@ -69,8 +69,8 @@ public class Ghost {
         Animation<TextureRegion> currentAnimation;
         if (direction == Ghost.UP) currentAnimation = UP_ANIMATION;
         else if (direction == Ghost.DOWN) currentAnimation = DOWN_ANIMATION;
-        else if (direction == Ghost.RIGHT) currentAnimation = RIGHT_ANIMATION;
-        else if (direction == Ghost.LEFT) currentAnimation = LEFT_ANIMATION;
+        else if (direction == Ghost.LEFT) currentAnimation = RIGHT_ANIMATION;
+        else if (direction == Ghost.RIGHT) currentAnimation = LEFT_ANIMATION;
         else if (direction == Ghost.IDLE) currentAnimation = DOWN_ANIMATION;
         else currentAnimation = null;
 
@@ -125,21 +125,25 @@ public class Ghost {
             // -----------------
             if (l != null) {
                 if (willNotCollide() && (!(direction==Ghost.IDLE))) {
+                    if (direction==Ghost.UP && l.get(0).y-1 < relY) {
+                        relY = l.get(1).y-1;
+                        direction=Ghost.IDLE;
+                    }
                     relX += moveSpeed*direction[0];
                     relY += moveSpeed*direction[1];
                 } else {
                     relX = Math.round(relX);
                     relY = Math.round(relY);
-
-                    if (l.get(0).x < relX) direction = Ghost.LEFT;
-                    else if (l.get(0).x > relX) direction = Ghost.RIGHT;
-                    else if (l.get(0).y > relY) direction = Ghost.DOWN;
-                    else if (l.get(0).y < relY) direction = Ghost.UP;
+                    if (l.get(1).x < relX) direction = Ghost.LEFT;
+                    else if (l.get(1).x > relX) direction = Ghost.RIGHT;
+                    else if (l.get(1).y > relY) direction = Ghost.DOWN;
+                    else if (l.get(1).y < relY) direction = Ghost.UP;
                 }
                 System.out.println("direction: "+ Arrays.toString(direction));
                 this.x = ((relX) * this.world.getWorldScale());
                 this.y = ((relY) * this.world.getWorldScale());
                 this.bounds.set(this.x,this.y,(float)this.world.getWorldScale(),(float)this.world.getWorldScale());
+                System.out.println();
             }
         } else lastMoveDeltaTime += Gdx.graphics.getDeltaTime();
     }
