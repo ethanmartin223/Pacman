@@ -23,15 +23,27 @@ public class Ghost {
     private float moveSpeed;
     private int[] nextLocation;
     private Rectangle bounds;
+    private int[] direction;
 
+    //anima
     private final Animation<TextureRegion> UP_ANIMATION;
-    
+    private final Animation<TextureRegion> DOWN_ANIMATION;
+    private final Animation<TextureRegion> LEFT_ANIMATION;
+    private final Animation<TextureRegion> RIGHT_ANIMATION;
+
+
     //const
     private static final int[][] VALID_MOVES = new int[][]{{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
-    
+    private static final int[] UP = new int[] {0,-1};
+    private static final int[] DOWN = new int[] {0,1};
+    private static final int[] RIGHT = new int[] {1,0};
+    private static final int[] LEFT = new int[] {-1,0};
 
     public Ghost(World world, float x, float y) {
         UP_ANIMATION = new Animation<TextureRegion>(0.1f, world.getTextureAtlas().findRegions("blinky_up"));
+        LEFT_ANIMATION = new Animation<TextureRegion>(0.1f, world.getTextureAtlas().findRegions("blinky_left"));
+        DOWN_ANIMATION = new Animation<TextureRegion>(0.1f, world.getTextureAtlas().findRegions("blinky_down"));
+        RIGHT_ANIMATION = new Animation<TextureRegion>(0.1f, world.getTextureAtlas().findRegions("blinky_right"));
 
         this.secondsBetweenMove =.01;
         this.world = world;
@@ -45,19 +57,27 @@ public class Ghost {
         this.currentSprite = name+"_idle";
         this.bounds = new Rectangle(this.x-this.world.getWorldScale()/2F,this.y-this.world.getWorldScale()/2F,
                 (float)this.world.getWorldScale(),(float)this.world.getWorldScale());
+        this.direction = Ghost.DOWN;
 
     }
 
     public void render(SpriteBatch spriteBatch) {
+        Animation<TextureRegion> currentAnimation;
+        if (direction == Ghost.UP) currentAnimation = UP_ANIMATION;
+        else if (direction == Ghost.DOWN) currentAnimation = DOWN_ANIMATION;
+        else if (direction == Ghost.RIGHT) currentAnimation = RIGHT_ANIMATION;
+        else if (direction == Ghost.LEFT) currentAnimation = LEFT_ANIMATION;
+        else currentAnimation = null;
+
         spriteBatch.begin();
-        spriteBatch.draw(UP_ANIMATION.getKeyFrame(world.getAnimationTime(),true),
+        spriteBatch.draw(currentAnimation.getKeyFrame(world.getAnimationTime(),true),
                 x+world.getWorldScale()*1.25F, y+world.getWorldScale()*1.25F, -world.getWorldScale()*1.5F,
                 -world.getWorldScale()*1.5F);
         spriteBatch.end();
     }
 
     public void debugRender(ShapeRenderer shapeRenderer) {
-        /*shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(.7F,.5F,.8F,1);
         Player pacman = world.getPlayer();
         List<PathfindingEngine.Point> l = world.getPath((int) relX, (int) relY, (int)(pacman.getRelX()+.5) , (int)(pacman.getRelY()+.5));
@@ -68,7 +88,7 @@ public class Ghost {
                 shapeRenderer.rect(j.x * world.getWorldScale(), j.y * world.getWorldScale(), world.getWorldScale(), world.getWorldScale());
             }
         }
-        shapeRenderer.end();*/
+        shapeRenderer.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(0,1,1,1);
         shapeRenderer.rect(this.x,this.y,(float)this.world.getWorldScale(),(float)this.world.getWorldScale());
@@ -87,10 +107,22 @@ public class Ghost {
             if (l == null) l = world.getPath((int) relX, (int) relY, (int)(pacman.getRelX()+.5)-1 , (int)(pacman.getRelY()+.5)-1);
             // -----------------
             if (l != null) {
-                if (l.get(0).x > relX) relX+=moveSpeed;
-                else if (l.get(0).x < relX) relX-=moveSpeed;
-                else if (l.get(0).y > relY) relY+=moveSpeed;
-                else if (l.get(0).y < relY) relY-=moveSpeed;
+                if (l.get(0).x > relX) {
+                    relX+=moveSpeed;
+                    direction = Ghost.LEFT;
+                }
+                else if (l.get(0).x < relX){
+                    relX-=moveSpeed;
+                    direction = Ghost.RIGHT;
+                }
+                else if (l.get(0).y > relY) {
+                    relY+=moveSpeed;
+                    direction = Ghost.DOWN;
+                }
+                else if (l.get(0).y < relY){
+                    relY-=moveSpeed;
+                    direction = Ghost.UP;
+                }
 
                 this.x = (float) (relX * this.world.getWorldScale());
                 this.y = (float) (relY * this.world.getWorldScale());
