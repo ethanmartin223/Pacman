@@ -49,7 +49,7 @@ public class Ghost {
         DOWN_ANIMATION = new Animation<TextureRegion>(0.1f, world.getTextureAtlas().findRegions("blinky_down"));
         RIGHT_ANIMATION = new Animation<TextureRegion>(0.1f, world.getTextureAtlas().findRegions("blinky_right"));
 
-        this.secondsBetweenMove =.1;
+        this.secondsBetweenMove =.01;
         this.world = world;
         this.relX = x;
         this.relY = y;
@@ -125,8 +125,8 @@ public class Ghost {
             // -----------------
             if (l != null) {
                 if (willNotCollide() && (!(direction==Ghost.IDLE))) {
-                    if (direction==Ghost.UP && l.get(0).y-1 < relY) {
-                        relY = l.get(1).y-1;
+                    if (direction==Ghost.UP && l.get(0).y == Math.round(relY+.5)) {
+                        relY = l.get(1).y;
                         direction=Ghost.IDLE;
                     }
                     relX += moveSpeed*direction[0];
