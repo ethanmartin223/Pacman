@@ -128,7 +128,18 @@ public class Ghost {
                     if (direction==Ghost.UP && l.get(0).y == Math.round(relY+.5)) {
                         relY = l.get(1).y;
                         direction=Ghost.IDLE;
+                    } else if (direction==Ghost.DOWN && l.get(0).y == Math.round(relY-.5)) {
+                        relY = l.get(1).y;
+                        direction=Ghost.IDLE;
+                    }else if (direction==Ghost.RIGHT && l.get(0).x == Math.round(relX-.5)) {
+                        relX = l.get(1).x;
+                        direction=Ghost.IDLE;
+                    }else if (direction==Ghost.LEFT && l.get(0).x == Math.round(relX+.5)) {
+                        relX = l.get(1).x;
+                        direction=Ghost.IDLE;
                     }
+
+
                     relX += moveSpeed*direction[0];
                     relY += moveSpeed*direction[1];
                 } else {
@@ -139,11 +150,9 @@ public class Ghost {
                     else if (l.get(1).y > relY) direction = Ghost.DOWN;
                     else if (l.get(1).y < relY) direction = Ghost.UP;
                 }
-                System.out.println("direction: "+ Arrays.toString(direction));
                 this.x = ((relX) * this.world.getWorldScale());
                 this.y = ((relY) * this.world.getWorldScale());
                 this.bounds.set(this.x,this.y,(float)this.world.getWorldScale(),(float)this.world.getWorldScale());
-                System.out.println();
             }
         } else lastMoveDeltaTime += Gdx.graphics.getDeltaTime();
     }
