@@ -102,7 +102,6 @@ public class Ghost {
 
     public boolean willNotCollide() {
         this.bounds.set(this.x+this.direction[0]*moveSpeed,this.y+this.direction[1]*moveSpeed,(float)this.world.getWorldScale(),(float)this.world.getWorldScale());
-        System.out.println(this.x+this.direction[0]*moveSpeed+ " "+ this.y+this.direction[1]*moveSpeed);
         for (Wall w : world.getWalls()) {
             if (Intersector.overlaps(w.getBounds(),this.bounds)) {
                 return false;
