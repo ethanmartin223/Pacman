@@ -62,5 +62,6 @@ public class MainApp extends ApplicationAdapter {
 		atlas.dispose();
 		shapeRenderer.dispose();
 		spriteBatch.dispose();
+		player.dispose();
 	}
 }

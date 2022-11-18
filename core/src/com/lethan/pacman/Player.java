@@ -2,6 +2,7 @@ package com.lethan.pacman;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,8 +21,7 @@ public class Player {
     private static final int[][] SUROUNDINGS = new int[][] {{}};
     private static final float ANIMATION_CHANGE_DELAY = .05F;
 
-    private float y;
-    private float x;
+    private float x, y;
     private int[] direction;
     private float lastMoveDeltaTime;
     private double secondsBetweenMove;
@@ -37,6 +37,7 @@ public class Player {
     private int score;
     private int lives;
     private int[] nextDirection;
+
 
     public Player(World world, float x, float y) {
         world.setPlayer(this);
@@ -144,7 +145,6 @@ public class Player {
                 direction = lastDirection;
                 nextDirection = Player.RIGHT;
             }
-
         }
     }
 
@@ -205,5 +205,9 @@ public class Player {
 
     public int getRelX() {
         return (int) relX;
+    }
+
+    public void dispose() {
+        WAKA_WAKA_NOISE.dispose();
     }
 }
