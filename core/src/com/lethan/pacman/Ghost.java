@@ -64,11 +64,6 @@ public class Ghost {
         LEFT_ANIMATION = new Animation<TextureRegion>(0.1f, world.getTextureAtlas().findRegions(name+"_left"));
         DOWN_ANIMATION = new Animation<TextureRegion>(0.1f, world.getTextureAtlas().findRegions(name+"_down"));
         RIGHT_ANIMATION = new Animation<TextureRegion>(0.1f, world.getTextureAtlas().findRegions(name+"_right"));
-        System.out.println(UP_ANIMATION);
-        System.out.println(LEFT_ANIMATION);
-        System.out.println(DOWN_ANIMATION);
-        System.out.println(RIGHT_ANIMATION);
-
     }
 
     public void render(SpriteBatch spriteBatch) {

@@ -23,6 +23,7 @@ public class World {
     private PathfindingEngine pathfinder;
     private float animationTime;
     private int levelNumber;
+    private Fruit fruit;
 
     private TextureAtlas textureAtlas;
 
@@ -66,6 +67,10 @@ public class World {
                     powerPelletList.add(new PowerPellet(this, x, y));
                     worldLayout[y][x] = 0;
                 }
+                if (worldLayout[y][x] == 4) {
+                    fruit = (new Fruit(this, x, y, this.getLevelNumber()));
+                    worldLayout[y][x] = 0;
+                }
                 if (worldLayout[y][x] == 9) {
                     ghostList.add(new Blinky(this, x, y));
                 }
@@ -97,6 +102,9 @@ public class World {
         for (Ghost ghost : ghostList) {
             ghost.update();
             ghost.render(batch);
+        }
+        if (fruit != null) {
+            fruit.render(batch);
         }
         this.animationTime += Gdx.graphics.getDeltaTime();
     }
