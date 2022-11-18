@@ -69,6 +69,14 @@ public class World {
                 if (worldLayout[y][x] == 9) {
                     ghostList.add(new Blinky(this, x, y));
                 }
+                if (worldLayout[y][x] == 8) {
+                    ghostList.add(new Pinky(this, x, y));
+                    worldLayout[y][x] = 0;
+                }
+                if (worldLayout[y][x] == 7) {
+                    ghostList.add(new Clyde(this, x, y));
+                    worldLayout[y][x] = 0;
+                }
             }
         }
     }

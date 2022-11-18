@@ -1,7 +1,7 @@
 package com.lethan.pacman;
 
-public class Blinky extends Ghost{
-    public Blinky(World world, float x, float y) {
+public class Pinky extends Ghost{
+    public Pinky(World world, float x, float y) {
         super(world, x, y);
         this.mode = GhostAttackMode.ATTACK_MODE;
     }
@@ -12,7 +12,9 @@ public class Blinky extends Ghost{
             case IDLE_MODE:;
             case DEATH_MODE:;
             case ATTACK_MODE:
-                moveTo(this.world.getPlayer().getRelX(), this.world.getPlayer().getRelY());
+                Player pacman = world.getPlayer();
+                int[] dir = pacman.getDirection();
+                moveTo(pacman.getRelX()+dir[0]*4, pacman.getRelY()+dir[1]*4);
             case SCATTER_MODE:;
             case POWER_PELLET_MODE:;
         }

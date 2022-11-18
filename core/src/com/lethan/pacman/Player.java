@@ -207,6 +207,9 @@ public class Player {
         return (int) relX;
     }
 
-    public void dispose() {
+    public void dispose() {}
+
+    public int[] getDirection() {
+        return direction;
     }
 }
