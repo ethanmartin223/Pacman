@@ -17,10 +17,12 @@ public class World {
     private List<Wall> wallList;
     private List<Pellet> pelletList;
     private List<PowerPellet> powerPelletList;
+    private List<Ghost> ghostList;
     private int worldScale;
     private Player player;
     private PathfindingEngine pathfinder;
     private float animationTime;
+    private int levelNumber;
 
     private TextureAtlas textureAtlas;
 
@@ -30,8 +32,10 @@ public class World {
         wallList = new ArrayList<Wall>();
         pelletList = new ArrayList<Pellet>();
         powerPelletList = new ArrayList<PowerPellet>();
+        ghostList = new ArrayList<Ghost>();
 
         textureAtlas = atlas;
+        levelNumber = 1;
         this.loadLevel(Levels.LEVEL_1);
         pathfinder = new PathfindingEngine(worldLayout);
         for (Wall w : wallList) w.determineSprite();
@@ -48,6 +52,8 @@ public class World {
     public void loadLevel(Levels level) {
         pelletList.clear();
         wallList.clear();
+        powerPelletList.clear();
+        ghostList.clear();
         worldLayout = Levels.getLevel(level);
         for (int y=0; y < worldLayout.length; y++) {
             for (int x = 0; x < worldLayout[y].length; x++) {
@@ -60,26 +66,38 @@ public class World {
                     powerPelletList.add(new PowerPellet(this, x, y));
                     worldLayout[y][x] = 0;
                 }
+                if (worldLayout[y][x] == 9) {
+                    ghostList.add(new Blinky(this, x, y));
+                }
             }
         }
     }
 
     public void render(SpriteBatch batch) {
-        for (Wall wall : wallList) wall.render(batch);
-        for (Pellet pellet: pelletList) pellet.render(batch);
-        for (PowerPellet powerPellet: powerPelletList) powerPellet.render(batch);
+        for (Wall wall : wallList) {
+            wall.render(batch);
+        }
+        for (Pellet pellet: pelletList) {
+            pellet.checkIfEaten();
+            pellet.render(batch);
+        }
+        for (PowerPellet powerPellet: powerPelletList) {
+            powerPellet.checkIfEaten();
+            powerPellet.render(batch);
+        }
+        player.render(batch);
+        for (Ghost ghost : ghostList) {
+            ghost.update();
+            ghost.render(batch);
+        }
         this.animationTime += Gdx.graphics.getDeltaTime();
-    }
-
-    public void update() {
-        for (Pellet pellet: pelletList) pellet.checkIfEaten();
-        for (PowerPellet powerPellet : powerPelletList) powerPellet.checkIfEaten();
     }
 
     public void debugRender(ShapeRenderer shapeRenderer) {
         for (Pellet pellet: pelletList) pellet.debugRender(shapeRenderer);
         for (PowerPellet powerPellet: powerPelletList) powerPellet.debugRender(shapeRenderer);
         for (Wall w: wallList) w.debugRender(shapeRenderer);
+        for (Ghost ghost : ghostList) ghost.debugRender(shapeRenderer);
         this.player.debugRender(shapeRenderer);
     }
 
@@ -111,6 +129,10 @@ public class World {
 
     public List<PathfindingEngine.Point> getPath(int sX, int sY, int eX, int eY) {
         return pathfinder.getPath(sX,sY,eX,eY);
+    }
+
+    public int getLevelNumber() {
+        return levelNumber;
     }
 }
 

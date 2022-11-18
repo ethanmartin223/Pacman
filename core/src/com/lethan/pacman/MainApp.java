@@ -20,7 +20,6 @@ public class MainApp extends ApplicationAdapter {
 
 	private World world;
 	private Player player;
-	private Ghost blinky, inky, pinky, clyde;
 	private PathfindingEngine pathfinder;
 
 	@Override
@@ -38,23 +37,16 @@ public class MainApp extends ApplicationAdapter {
 
 		world = new World(atlas, 20);
 		player = new Player(world,13.5F,23F);
-		clyde = new Clyde(world,1,29);
-		blinky = new Blinky(world, 1, 29);
 	}
 
 	@Override
 	public void render () {
 		player.move();
-		world.update();
-		blinky.followPlayer();
 
 		ScreenUtils.clear(0, 0, 0, 1);
 
 		world.render(spriteBatch);
-		player.render(spriteBatch);
-		blinky.render(spriteBatch);
 		//world.debugRender(shapeRenderer);
-		//blinky.debugRender(shapeRenderer);
 	}
 	
 	@Override

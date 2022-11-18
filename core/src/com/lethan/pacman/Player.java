@@ -208,6 +208,5 @@ public class Player {
     }
 
     public void dispose() {
-        WAKA_WAKA_NOISE.dispose();
     }
 }

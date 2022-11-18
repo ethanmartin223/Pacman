@@ -27,6 +27,7 @@ public class Ghost {
     private int[] nextLocation;
     private Rectangle bounds;
     private int[] direction;
+    protected GhostAttackMode mode;
 
     //anima
     private final Animation<TextureRegion> UP_ANIMATION;
@@ -63,7 +64,6 @@ public class Ghost {
         this.bounds = new Rectangle(this.x - this.world.getWorldScale() / 2F, this.y - this.world.getWorldScale() / 2F,
                 (float) this.world.getWorldScale(), (float) this.world.getWorldScale());
         this.direction = Ghost.IDLE;
-
     }
 
     public void render(SpriteBatch spriteBatch) {
@@ -127,8 +127,9 @@ public class Ghost {
                 l = world.getPath((int) (relX), (int) (relY), (int) (pacman.getRelX() + .5) - 1, (int) (pacman.getRelY() + .5) - 1);
 
             // -----------------
-            if (l != null) {
+            if (l != null && l.size() > 1) {
                 if (willNotCollide() && (!(direction == Ghost.IDLE))) {
+
                     if (direction == Ghost.UP && l.get(0).y == Math.round(relY + .5)) {
                         relY = l.get(1).y;
                         direction = Ghost.IDLE;
@@ -142,17 +143,16 @@ public class Ghost {
                         relX = l.get(1).x;
                         direction = Ghost.IDLE;
                     }
-
-
                     relX += moveSpeed * direction[0];
                     relY += moveSpeed * direction[1];
+
                 } else {
                     relX = Math.round(relX);
                     relY = Math.round(relY);
-                    if (l.get(1).x < relX) direction = Ghost.LEFT;
-                    else if (l.get(1).x > relX) direction = Ghost.RIGHT;
-                    else if (l.get(1).y > relY) direction = Ghost.DOWN;
-                    else if (l.get(1).y < relY) direction = Ghost.UP;
+                    if (l.get(0).x < relX) direction = Ghost.LEFT;
+                    else if (l.get(0).x > relX) direction = Ghost.RIGHT;
+                    else if (l.get(0).y > relY) direction = Ghost.DOWN;
+                    else if (l.get(0).y < relY) direction = Ghost.UP;
                 }
                 this.x = ((relX) * this.world.getWorldScale());
                 this.y = ((relY) * this.world.getWorldScale());
@@ -167,5 +167,16 @@ public class Ghost {
 
     public float getX() {
         return x;
+    }
+
+    public void update() {
+        switch (mode) {
+            case IDLE_MODE:;
+            case DEATH_MODE:;
+            case ATTACK_MODE:
+                followPlayer();
+            case SCATTER_MODE:;
+            case POWER_PELLET_MODE:;
+        }
     }
 }
