@@ -36,12 +36,13 @@ public class Ghost {
     protected final Animation<TextureRegion> RIGHT_ANIMATION;
 
     //const
-    protected static final int[][] VALID_MOVES = new int[][]{{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
     protected static final int[] UP = new int[]{0, -1};
     protected static final int[] DOWN = new int[]{0, 1};
     protected static final int[] RIGHT = new int[]{1, 0};
     protected static final int[] LEFT = new int[]{-1, 0};
     protected static final int[] IDLE = new int[]{0, 0};
+    protected static final int[][] VALID_MOVES = new int[][]{UP, LEFT, DOWN, RIGHT};
+
 
 
     public Ghost(World world, float x, float y) {
@@ -83,28 +84,14 @@ public class Ghost {
     }
 
     public void debugRender(ShapeRenderer shapeRenderer) {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(1F, 0F, 1F, .05F);
-        Player pacman = world.getPlayer();
-        List<PathfindingEngine.Point> l = world.getPath((int) (relX + .5), (int) (relY + .5), (int) (pacman.getRelX() + .5), (int) (pacman.getRelY() + .5));
-        if (l == null)
-            l = world.getPath((int) relX, (int) relY, (int) (pacman.getRelX() + .5) + 1, (int) (pacman.getRelY() + .5) + 1);
-        if (l == null)
-            l = world.getPath((int) relX, (int) relY, (int) (pacman.getRelX() + .5) - 1, (int) (pacman.getRelY() + .5) - 1);
-        if (l != null) {
-            for (PathfindingEngine.Point j : l) {
-                shapeRenderer.rect(j.x * world.getWorldScale(), j.y * world.getWorldScale(), world.getWorldScale(), world.getWorldScale());
-            }
-        }
-        shapeRenderer.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 0, 0, 1);
         shapeRenderer.rect(this.x + this.direction[0] * moveSpeed, this.y + this.direction[1] * moveSpeed, (float) this.world.getWorldScale(), (float) this.world.getWorldScale());
         shapeRenderer.end();
     }
 
-    public boolean willNotCollide() {
-        this.bounds.set(this.x + this.direction[0] * moveSpeed, this.y + this.direction[1] * moveSpeed, (float) this.world.getWorldScale(), (float) this.world.getWorldScale());
+    public boolean willNotCollide(float x, float y, int[] direction) {
+        this.bounds.set(x + direction[0] * moveSpeed, y + direction[1] * moveSpeed, (float) this.world.getWorldScale(), (float) this.world.getWorldScale());
         for (Wall w : world.getWalls()) {
             if (Intersector.overlaps(w.getBounds(), this.bounds)) {
                 return false;
@@ -113,52 +100,34 @@ public class Ghost {
         return true;
     }
 
+    public boolean willCauseTurnAround(int[] dir) {
+        if ((dir == UP && direction == DOWN) || (dir == DOWN && direction == UP)) return true;
+        else return (dir == LEFT && direction == RIGHT) || (dir == RIGHT && direction == LEFT);
+    }
+
     public void moveTo(int dx, int dy) {
         if (lastMoveDeltaTime >= secondsBetweenMove) {
             lastMoveDeltaTime = 0;
             Player pacman = world.getPlayer();
-
-            // "possible" bottleneck here.
-            // change to if player x,y is not a wall, don't bother running alg first
-            List<PathfindingEngine.Point> l = world.getPath((int) (relX), (int) (relY), (int) (dx + .5), (int) (dy + .5));
-            if (l == null)
-                l = world.getPath((int) (relX), (int) (relY), (int) (dx + .5) + 1, (int) (dy + .5) + 1);
-            if (l == null)
-                l = world.getPath((int) (relX), (int) (relY), (int) (dx + .5) - 1, (int) (dy + .5) - 1);
-
-            // -----------------
-            if (l != null && l.size() > 1) {
-                if (willNotCollide() && (!(direction == Ghost.IDLE))) {
-
-                    if (direction == Ghost.UP && l.get(0).y == Math.round(relY + .5)) {
-                        relY = l.get(1).y;
-                        direction = Ghost.IDLE;
-                    } else if (direction == Ghost.DOWN && l.get(0).y == Math.round(relY - .5)) {
-                        relY = l.get(1).y;
-                        direction = Ghost.IDLE;
-                    } else if (direction == Ghost.RIGHT && l.get(0).x == Math.round(relX - .5)) {
-                        relX = l.get(1).x;
-                        direction = Ghost.IDLE;
-                    } else if (direction == Ghost.LEFT && l.get(0).x == Math.round(relX + .5)) {
-                        relX = l.get(1).x;
-                        direction = Ghost.IDLE;
+            int[] bestDirection = Ghost.IDLE;
+            int bestScore = Integer.MAX_VALUE;
+            for (int[] dir : VALID_MOVES) {
+                if (willNotCollide(this.x, this.y, dir)) {
+                    if (Math.sqrt(Math.pow(pacman.getRelX()-relX,2)+Math.pow(pacman.getRelY()-relY,2)) < bestScore && (!willCauseTurnAround(dir))) {
+                        bestDirection = dir;
                     }
-                    relX += moveSpeed * direction[0];
-                    relY += moveSpeed * direction[1];
-
-                } else {
-                    relX = Math.round(relX);
-                    relY = Math.round(relY);
-                    if (l.get(0).x < relX) direction = Ghost.LEFT;
-                    else if (l.get(0).x > relX) direction = Ghost.RIGHT;
-                    else if (l.get(0).y > relY) direction = Ghost.DOWN;
-                    else if (l.get(0).y < relY) direction = Ghost.UP;
-                    lastDirection = direction;
                 }
-                this.x = ((relX) * this.world.getWorldScale());
-                this.y = ((relY) * this.world.getWorldScale());
-                this.bounds.set(this.x, this.y, (float) this.world.getWorldScale(), (float) this.world.getWorldScale());
             }
+            this.direction = bestDirection;
+
+            if ((int)relX > (int)(relX+(bestDirection[0]*moveSpeed))) relX = (int)(relX+(bestDirection[0]*moveSpeed));
+            else relX += (bestDirection[0]*moveSpeed);
+            if ((int)relY > (int)(relY+(bestDirection[1]*moveSpeed))) relY = (int)(relY+(bestDirection[1]*moveSpeed));
+            else relY += (bestDirection[1]*moveSpeed);
+
+            this.x = ((relX) * this.world.getWorldScale());
+            this.y = ((relY) * this.world.getWorldScale());
+            this.bounds.set(this.x, this.y, (float) this.world.getWorldScale(), (float) this.world.getWorldScale());
         } else lastMoveDeltaTime += Gdx.graphics.getDeltaTime();
     }
 

@@ -20,7 +20,6 @@ public class World {
     private List<Ghost> ghostList;
     private int worldScale;
     private Player player;
-    private PathfindingEngine pathfinder;
     private float animationTime;
     private int levelNumber;
     private Fruit fruit;
@@ -38,7 +37,6 @@ public class World {
         textureAtlas = atlas;
         levelNumber = 1;
         this.loadLevel(Levels.LEVEL_1);
-        pathfinder = new PathfindingEngine(worldLayout);
         for (Wall w : wallList) w.determineSprite();
     }
 
@@ -71,19 +69,12 @@ public class World {
                     fruit = (new Fruit(this, x, y, this.getLevelNumber()));
                     worldLayout[y][x] = 0;
                 }
-                if (worldLayout[y][x] == 9) {
-                    ghostList.add(new Blinky(this, x, y));
-                }
-                if (worldLayout[y][x] == 8) {
-                    ghostList.add(new Pinky(this, x, y));
-                    worldLayout[y][x] = 0;
-                }
-                if (worldLayout[y][x] == 7) {
-                    ghostList.add(new Clyde(this, x, y));
-                    worldLayout[y][x] = 0;
-                }
             }
         }
+    }
+
+    public void spawnBlinky(float x, float y) {
+        ghostList.add(new Blinky(this, x, y));
     }
 
     public void render(SpriteBatch batch) {
@@ -138,14 +129,6 @@ public class World {
     }
 
     public TextureAtlas getTextureAtlas() {return textureAtlas;}
-
-    public PathfindingEngine getPathfinder() {
-        return pathfinder;
-    }
-
-    public List<PathfindingEngine.Point> getPath(int sX, int sY, int eX, int eY) {
-        return pathfinder.getPath(sX,sY,eX,eY);
-    }
 
     public int getLevelNumber() {
         return levelNumber;
