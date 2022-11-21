@@ -77,6 +77,10 @@ public class World {
         ghostList.add(new Blinky(this, x, y));
     }
 
+    public void spawnPinky(float x, float y) {ghostList.add(new Pinky(this, x, y));}
+
+    public void spawnClyde(float x, float y) {ghostList.add(new Clyde(this, x, y));}
+
     public void render(SpriteBatch batch) {
         for (Wall wall : wallList) {
             wall.render(batch);
@@ -133,5 +137,7 @@ public class World {
     public int getLevelNumber() {
         return levelNumber;
     }
+
+
 }
 

@@ -36,7 +36,9 @@ public class MainApp extends ApplicationAdapter {
 
 		world = new World(atlas, 20);
 		player = new Player(world,13.5F,23F);
-		world.spawnBlinky(21F, 11F);
+		world.spawnBlinky(26F, 1F);
+		world.spawnPinky(1F, 1F);
+
 	}
 
 	@Override
