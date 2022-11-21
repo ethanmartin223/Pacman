@@ -105,25 +105,28 @@ public class Ghost {
         else return (dir == LEFT && direction == RIGHT) || (dir == RIGHT && direction == LEFT);
     }
 
+    public static double round(double value, int places) {
+        double scale = Math.pow(10, places);
+        return Math.round(value * scale) / scale;
+    }
+
     public void moveTo(int dx, int dy) {
         if (lastMoveDeltaTime >= secondsBetweenMove) {
             lastMoveDeltaTime = 0;
-            Player pacman = world.getPlayer();
             int[] bestDirection = Ghost.IDLE;
-            int bestScore = Integer.MAX_VALUE;
+            double bestScore = Integer.MAX_VALUE;
             for (int[] dir : VALID_MOVES) {
                 if (willNotCollide(this.x, this.y, dir)) {
-                    if (Math.sqrt(Math.pow(pacman.getRelX()-relX,2)+Math.pow(pacman.getRelY()-relY,2)) < bestScore && (!willCauseTurnAround(dir))) {
+                    if ((Math.abs(dx-(relX+dir[0]))+Math.abs(dy-(relY+dir[1]))) < bestScore && (!willCauseTurnAround(dir))) {
                         bestDirection = dir;
+                        bestScore = (Math.abs(dx-(relX+dir[0]))+Math.abs(dy-(relY+dir[1])));
                     }
                 }
             }
             this.direction = bestDirection;
 
-            if ((int)relX > (int)(relX+(bestDirection[0]*moveSpeed))) relX = (int)(relX+(bestDirection[0]*moveSpeed));
-            else relX += (bestDirection[0]*moveSpeed);
-            if ((int)relY > (int)(relY+(bestDirection[1]*moveSpeed))) relY = (int)(relY+(bestDirection[1]*moveSpeed));
-            else relY += (bestDirection[1]*moveSpeed);
+            relX = (float) round(relX+direction[0]*moveSpeed,2);
+            relY = (float) round(relY+direction[1]*moveSpeed,2);
 
             this.x = ((relX) * this.world.getWorldScale());
             this.y = ((relY) * this.world.getWorldScale());
