@@ -23,6 +23,7 @@ public class World {
     private float animationTime;
     private int levelNumber;
     private Fruit fruit;
+    private Ghost clyde, inky, pinky, blinky;
 
     private TextureAtlas textureAtlas;
 
@@ -74,12 +75,38 @@ public class World {
     }
 
     public void spawnBlinky(float x, float y) {
-        ghostList.add(new Blinky(this, x, y));
+        blinky = new Blinky(this, x, y);
+        ghostList.add(blinky);
+
+    }
+    public void spawnPinky(float x, float y) {
+        pinky = new Pinky(this, x, y);
+        ghostList.add(pinky);
+    }
+    public void spawnClyde(float x, float y) {
+        clyde = new Clyde(this, x, y);
+        ghostList.add(clyde);
+    }
+    public void spawnInky(float x, float y) {
+        inky = new Inky(this, x, y);
+        ghostList.add(inky);
     }
 
-    public void spawnPinky(float x, float y) {ghostList.add(new Pinky(this, x, y));}
+    public Ghost getBlinky() {
+        return blinky;
+    }
 
-    public void spawnClyde(float x, float y) {ghostList.add(new Clyde(this, x, y));}
+    public Ghost getClyde() {
+        return clyde;
+    }
+
+    public Ghost getInky() {
+        return inky;
+    }
+
+    public Ghost getPinky() {
+        return pinky;
+    }
 
     public void render(SpriteBatch batch) {
         for (Wall wall : wallList) {
@@ -108,7 +135,9 @@ public class World {
         for (Pellet pellet: pelletList) pellet.debugRender(shapeRenderer);
         for (PowerPellet powerPellet: powerPelletList) powerPellet.debugRender(shapeRenderer);
         for (Wall w: wallList) w.debugRender(shapeRenderer);
-        for (Ghost ghost : ghostList) ghost.debugRender(shapeRenderer);
+        for (Ghost ghost : ghostList) {
+            ghost.debugRender(shapeRenderer);
+        }
         this.player.debugRender(shapeRenderer);
     }
 

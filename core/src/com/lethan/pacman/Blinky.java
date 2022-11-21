@@ -1,5 +1,7 @@
 package com.lethan.pacman;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
 public class Blinky extends Ghost{
     public Blinky(World world, float x, float y) {
         super(world, x, y);
