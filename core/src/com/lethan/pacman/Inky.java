@@ -10,21 +10,15 @@ public class Inky extends Ghost{
         this.mode = GhostAttackMode.SICKO_MODE;
     }
 
-    public static int[] rotate_point(float cx,float cy,float angle, int[] p) {
+    public static double[] rotatePoint(float cx,float cy,float angle, double[] p) {
         double s = Math.sin(angle);
         double c = Math.cos(angle);
-
-        // translate point back to origin:
-        p.x -= cx;
-        p.y -= cy;
-
-        // rotate point
-        float xnew = p.x * c - p.y * s;
-        float ynew = p.x * s + p.y * c;
-
-        // translate point back:
-        p.x = xnew + cx;
-        p.y = ynew + cy;
+        p[0] -= cx;
+        p[1] -= cy;
+        double xnew = p[0] * c - p[1] * s;
+        double ynew = p[0] * s + p[1] * c;
+        p[0] = xnew + cx;
+        p[1] = ynew + cy;
         return p;
     }
 
@@ -32,12 +26,13 @@ public class Inky extends Ghost{
     public void update() {
         if (mode == GhostAttackMode.SICKO_MODE) {
             Player pacman = world.getPlayer();
-            float pcX = pacman.getRelX()+pacman.getDirection()[0]*2;
-            float pcY = pacman.getRelY()+pacman.getDirection()[1]*2;
-            targetX = (int)(-((relX-pcX))+pcX);
-            targetY = (int)(-((relY-pcY))+pcY);
-
-            moveTo((int)((-(relX-pcX))+pcX), (int)((-(relY-pcY))+pcY));
+            Ghost blinky = world.getBlinky();
+            float pcX = pacman.getRelX();
+            float pcY = pacman.getRelY();
+            double[] rotatedPoint = rotatePoint(pacman.getRelX(), pacman.getRelY(), -100, new double[] {blinky.getRelX(), blinky.getRelY()});
+            targetX = (float) rotatedPoint[0];
+            targetY = (float) rotatedPoint[1];
+            moveTo((int) targetX, (int) targetY);
         }
         if (mode == GhostAttackMode.SCATTER_MODE) {
             moveTo(3,-4);

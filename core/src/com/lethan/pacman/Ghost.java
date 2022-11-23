@@ -147,6 +147,14 @@ public class Ghost {
         return x;
     }
 
+    public float getRelX() {
+        return relX;
+    }
+
+    public float getRelY() {
+        return relY;
+    }
+
     public void update() {
     }
 }
