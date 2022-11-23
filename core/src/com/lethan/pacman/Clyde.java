@@ -1,7 +1,5 @@
 package com.lethan.pacman;
 
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-
 public class Clyde extends Ghost{
 
     public Clyde(World world, float x, float y) {

@@ -22,7 +22,6 @@ public class World {
     private Player player;
     private float animationTime;
     private int levelNumber;
-    private Fruit fruit;
     private Ghost clyde, inky, pinky, blinky;
 
     private TextureAtlas textureAtlas;
@@ -64,10 +63,6 @@ public class World {
                 }
                 if (worldLayout[y][x] == 3) {
                     powerPelletList.add(new PowerPellet(this, x, y));
-                    worldLayout[y][x] = 0;
-                }
-                if (worldLayout[y][x] == 4) {
-                    fruit = (new Fruit(this, x, y, this.getLevelNumber()));
                     worldLayout[y][x] = 0;
                 }
             }
@@ -124,9 +119,6 @@ public class World {
         for (Ghost ghost : ghostList) {
             ghost.update();
             ghost.render(batch);
-        }
-        if (fruit != null) {
-            fruit.render(batch);
         }
         this.animationTime += Gdx.graphics.getDeltaTime();
     }
