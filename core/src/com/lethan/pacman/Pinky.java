@@ -13,6 +13,8 @@ public class Pinky extends Ghost{
         if (mode == GhostAttackMode.SICKO_MODE) {
             Player pacman = world.getPlayer();
             int[] dir = pacman.getDirection();
+            targetY = pacman.getRelY() + dir[1] * 4;
+            targetX = pacman.getRelX() + dir[0] * 4;
             moveTo(pacman.getRelX() + dir[0] * 4, (pacman.getRelY() + dir[1] * 4));
         }
         if (mode == GhostAttackMode.SCATTER_MODE) {

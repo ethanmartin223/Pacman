@@ -135,9 +135,7 @@ public class World {
         for (Pellet pellet: pelletList) pellet.debugRender(shapeRenderer);
         for (PowerPellet powerPellet: powerPelletList) powerPellet.debugRender(shapeRenderer);
         for (Wall w: wallList) w.debugRender(shapeRenderer);
-        for (Ghost ghost : ghostList) {
-            ghost.debugRender(shapeRenderer);
-        }
+        for (Ghost ghost : ghostList) ghost.debugRender(shapeRenderer);
         this.player.debugRender(shapeRenderer);
     }
 

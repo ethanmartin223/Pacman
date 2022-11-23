@@ -28,6 +28,7 @@ public class Ghost {
     protected Rectangle bounds;
     protected int[] direction;
     protected GhostAttackMode mode;
+    protected float targetX, targetY;
 
     //anima
     protected final Animation<TextureRegion> UP_ANIMATION;
@@ -61,6 +62,9 @@ public class Ghost {
         this.direction = Ghost.IDLE;
         this.lastDirection = this.direction;
 
+        this.targetX = 0;
+        this.targetY = 0;
+
         UP_ANIMATION = new Animation<TextureRegion>(0.1f, world.getTextureAtlas().findRegions(name+"_up"));
         LEFT_ANIMATION = new Animation<TextureRegion>(0.1f, world.getTextureAtlas().findRegions(name+"_left"));
         DOWN_ANIMATION = new Animation<TextureRegion>(0.1f, world.getTextureAtlas().findRegions(name+"_down"));
@@ -84,9 +88,10 @@ public class Ghost {
     }
 
     public void debugRender(ShapeRenderer shapeRenderer) {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(1, 0, 0, 1);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(.8f, .5f, 1, 1);
         shapeRenderer.rect(this.x + this.direction[0] * moveSpeed, this.y + this.direction[1] * moveSpeed, (float) this.world.getWorldScale(), (float) this.world.getWorldScale());
+        shapeRenderer.circle(targetX*world.getWorldScale()+world.getWorldScale() *.5F,targetY*world.getWorldScale()+world.getWorldScale() *.5F, world.getWorldScale()/2F);
         shapeRenderer.end();
     }
 
