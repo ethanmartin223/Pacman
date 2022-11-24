@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class Pinky extends Ghost{
     public Pinky(World world, float x, float y) {
         super(world, x, y);
-        this.mode = GhostAttackMode.SICKO_MODE;
+        this.mode = GhostAttackMode.SCATTER_MODE;
     }
 
     @Override
@@ -19,6 +19,8 @@ public class Pinky extends Ghost{
         }
         if (mode == GhostAttackMode.SCATTER_MODE) {
             moveTo(3,-4);
+            targetX = 3;
+            targetY = -4;
         }
     }
 }

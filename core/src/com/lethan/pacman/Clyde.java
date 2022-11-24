@@ -4,7 +4,7 @@ public class Clyde extends Ghost{
 
     public Clyde(World world, float x, float y) {
         super(world, x, y);
-        this.mode = GhostAttackMode.SICKO_MODE;
+        this.mode = GhostAttackMode.SCATTER_MODE;
     }
 
     @Override
@@ -22,7 +22,9 @@ public class Clyde extends Ghost{
             }
         }
         if (mode == GhostAttackMode.SCATTER_MODE) {
-            moveTo(3,-4);
+            moveTo(1,31);
+            targetX = 1;
+            targetY = 31;
         }
     }
 

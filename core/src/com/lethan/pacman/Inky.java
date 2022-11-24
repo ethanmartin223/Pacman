@@ -7,7 +7,7 @@ public class Inky extends Ghost{
 
     public Inky(World world, float x, float y) {
         super(world, x, y);
-        this.mode = GhostAttackMode.SICKO_MODE;
+        this.mode = GhostAttackMode.SCATTER_MODE;
     }
 
     public static double[] rotatePoint(float cx,float cy,float angle, float pointX,float pointY) {
@@ -25,15 +25,17 @@ public class Inky extends Ghost{
             Ghost blinky = world.getBlinky();
             float pcX = pacman.getRelX();
             float pcY = pacman.getRelY();
-            double[] rotatedPoint = rotatePoint(pacman.getRelX(), pacman.getRelY(),
-                    (float)Math.atan((pacman.getRelY()-blinky.getRelY())/(pacman.getRelX()-blinky.getRelX()))-180,
+            double[] rotatedPoint = rotatePoint(pacman.getRelX()+pacman.getDirection()[0]*2,
+                    pacman.getRelY()+pacman.getDirection()[1]*2,
                     blinky.getRelX(), blinky.getRelY());
             targetX = (float) rotatedPoint[0];
             targetY = (float) rotatedPoint[1];
             moveTo((int) targetX, (int) targetY);
         }
         if (mode == GhostAttackMode.SCATTER_MODE) {
-            moveTo(3,-4);
+            moveTo(31,32);
+            targetX = 31;
+            targetY =32;
         }
     }
 

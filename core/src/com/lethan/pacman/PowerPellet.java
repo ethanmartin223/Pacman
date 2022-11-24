@@ -49,6 +49,9 @@ public class PowerPellet{
             if (pelletDistance < world.getWorldScale() / 4F) {
                 this.isEaten = true;
                 pacman.addScore(50);
+                for (Ghost g : world.getGhostList()) {
+                    g.setMode(GhostAttackMode.FRIGHTENED);
+                }
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.lethan.pacman;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,8 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Ghost {
@@ -35,6 +33,7 @@ public class Ghost {
     protected final Animation<TextureRegion> DOWN_ANIMATION;
     protected final Animation<TextureRegion> LEFT_ANIMATION;
     protected final Animation<TextureRegion> RIGHT_ANIMATION;
+    protected final Animation<TextureRegion> FRIGHTENED_ANIMATION;
 
     //const
     protected static final int[] UP = new int[]{0, -1};
@@ -44,7 +43,22 @@ public class Ghost {
     protected static final int[] IDLE = new int[]{0, 0};
     protected static final int[][] VALID_MOVES = new int[][]{UP, LEFT, DOWN, RIGHT};
 
+    protected double timeSinceLastScatter;
+    protected double timeInScatterMode;
+    protected double nextScatterTime;
+    protected double totalScatterTimeDuration;
+    protected int scatterNumber;
 
+    protected final static double[] LEVEL_TYPE_A_SCATTER_TIMES = new double[] {7,7,5,5};
+    protected final static double[] LEVEL_TYPE_B_SCATTER_TIMES = new double[] {7,7,5,1.0/60};
+    protected final static double[] LEVEL_TYPE_C_SCATTER_TIMES = new double[] {5,5,5,1.0/60};
+
+    protected final static double[] LEVEL_TYPE_A_CHASE_TIMES = new double[] {20,20,20,-1};
+    protected final static double[] LEVEL_TYPE_B_CHASE_TIMES = new double[] {20,20,1033,-1};
+    protected final static double[] LEVEL_TYPE_C_CHASE_TIMES = new double[] {20,20,1037,-1};
+
+    protected double[] currentScatterTimes;
+    protected double[] currentChaseTimes;
 
     public Ghost(World world, float x, float y) {
         this.name = this.getClass().getSimpleName().toLowerCase();
@@ -65,20 +79,71 @@ public class Ghost {
         this.targetX = 0;
         this.targetY = 0;
 
+        if (world.getLevelNumber() == 1) {
+            this.currentChaseTimes = LEVEL_TYPE_A_CHASE_TIMES;
+            this.currentScatterTimes = LEVEL_TYPE_A_SCATTER_TIMES;
+        } else if (world.getLevelNumber() > 1 && world.getLevelNumber() < 5) {
+            this.currentChaseTimes = LEVEL_TYPE_B_CHASE_TIMES;
+            this.currentScatterTimes = LEVEL_TYPE_B_SCATTER_TIMES;
+        } else {
+            this.currentChaseTimes = LEVEL_TYPE_C_CHASE_TIMES;
+            this.currentScatterTimes = LEVEL_TYPE_C_SCATTER_TIMES;
+        }
+
+        //scatter time settings
+        this.scatterNumber = 0;
+        this.timeSinceLastScatter = 0;
+        this.timeInScatterMode = 0;
+        this.totalScatterTimeDuration = currentScatterTimes[scatterNumber];
+        this.nextScatterTime = currentChaseTimes[scatterNumber];
+
+        //anima
         UP_ANIMATION = new Animation<TextureRegion>(0.1f, world.getTextureAtlas().findRegions(name+"_up"));
         LEFT_ANIMATION = new Animation<TextureRegion>(0.1f, world.getTextureAtlas().findRegions(name+"_left"));
         DOWN_ANIMATION = new Animation<TextureRegion>(0.1f, world.getTextureAtlas().findRegions(name+"_down"));
         RIGHT_ANIMATION = new Animation<TextureRegion>(0.1f, world.getTextureAtlas().findRegions(name+"_right"));
+        FRIGHTENED_ANIMATION = new Animation<TextureRegion>(0.1f, world.getTextureAtlas().findRegions("ghost_mortal"));
+    }
+
+    public void determineMode() {
+        if (mode == GhostAttackMode.SICKO_MODE) {
+            if (timeSinceLastScatter >= nextScatterTime && nextScatterTime > 0) {
+                timeSinceLastScatter = 0;
+                this.nextScatterTime = currentChaseTimes[scatterNumber];
+                setMode(GhostAttackMode.SCATTER_MODE);
+            } else timeSinceLastScatter += Gdx.graphics.getDeltaTime();
+        } else if (mode == GhostAttackMode.SCATTER_MODE) {
+            if (timeInScatterMode >= totalScatterTimeDuration) {
+                timeInScatterMode = 0;
+                scatterNumber += scatterNumber>=3?0:1;
+                this.totalScatterTimeDuration = currentScatterTimes[scatterNumber];
+                setMode(GhostAttackMode.SICKO_MODE);
+            } else timeInScatterMode += Gdx.graphics.getDeltaTime();
+        }
+    }
+
+    public void setMode(GhostAttackMode m) {
+        mode = m;
+        if (mode != GhostAttackMode.FRIGHTENED) {
+            if (direction == Ghost.UP) direction = DOWN;
+            else if (direction == Ghost.DOWN) direction = UP;
+            else if (direction == Ghost.LEFT) direction = RIGHT;
+            else if (direction == Ghost.RIGHT) direction = LEFT;
+        }
     }
 
     public void render(SpriteBatch spriteBatch) {
         Animation<TextureRegion> currentAnimation;
-        if (direction == Ghost.UP) currentAnimation = UP_ANIMATION;
-        else if (direction == Ghost.DOWN) currentAnimation = DOWN_ANIMATION;
-        else if (direction == Ghost.LEFT) currentAnimation = RIGHT_ANIMATION;
-        else if (direction == Ghost.RIGHT) currentAnimation = LEFT_ANIMATION;
-        else if (direction == Ghost.IDLE) currentAnimation = DOWN_ANIMATION;
-        else currentAnimation = null;
+        if (mode != GhostAttackMode.FRIGHTENED) {
+            if (direction == Ghost.UP) currentAnimation = UP_ANIMATION;
+            else if (direction == Ghost.DOWN) currentAnimation = DOWN_ANIMATION;
+            else if (direction == Ghost.LEFT) currentAnimation = RIGHT_ANIMATION;
+            else if (direction == Ghost.RIGHT) currentAnimation = LEFT_ANIMATION;
+            else if (direction == Ghost.IDLE) currentAnimation = DOWN_ANIMATION;
+            else currentAnimation = null;
+        } else {
+            currentAnimation = FRIGHTENED_ANIMATION;
+        }
 
         spriteBatch.begin();
         spriteBatch.draw(currentAnimation.getKeyFrame(world.getAnimationTime(), true),
@@ -116,6 +181,7 @@ public class Ghost {
     }
 
     public void moveTo(int dx, int dy) {
+        determineMode();
         if (lastMoveDeltaTime >= secondsBetweenMove) {
             lastMoveDeltaTime = 0;
             int[] bestDirection = Ghost.IDLE;

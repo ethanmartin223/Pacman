@@ -1,5 +1,5 @@
 package com.lethan.pacman;
 
 public enum GhostAttackMode {
-    SICKO_MODE, SCATTER_MODE, DEATH_MODE, IDLE_MODE, POWER_PELLET_MODE
+    SICKO_MODE, SCATTER_MODE, DEATH_MODE, IDLE_MODE, FRIGHTENED
 }
