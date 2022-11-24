@@ -12,7 +12,7 @@ public class Inky extends Ghost{
 
     public static double[] rotatePoint(float cx,float cy,float angle, float pointX,float pointY) {
         double angleInRadians = angle * Math.PI / 180;
-        double lineLength = Math.sqrt(Math.pow((cx-pointX),2)+(cy-pointY));
+        double lineLength = Math.sqrt(Math.pow((cx-pointX),2)+Math.pow((cy-pointY),2));
         double endX = cx + lineLength * Math.cos(angleInRadians);
         double endY = cy + lineLength * Math.sin(angleInRadians);
         return new double[] {endX, endY};
@@ -25,7 +25,9 @@ public class Inky extends Ghost{
             Ghost blinky = world.getBlinky();
             float pcX = pacman.getRelX();
             float pcY = pacman.getRelY();
-            double[] rotatedPoint = rotatePoint(pacman.getRelX(), pacman.getRelY(), 180, blinky.getRelX(), blinky.getRelY());
+            double[] rotatedPoint = rotatePoint(pacman.getRelX(), pacman.getRelY(),
+                    (float)Math.atan((pacman.getRelY()-blinky.getRelY())/(pacman.getRelX()-blinky.getRelX()))-180,
+                    blinky.getRelX(), blinky.getRelY());
             targetX = (float) rotatedPoint[0];
             targetY = (float) rotatedPoint[1];
             moveTo((int) targetX, (int) targetY);
