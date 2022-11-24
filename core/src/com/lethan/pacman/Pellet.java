@@ -50,6 +50,7 @@ public class Pellet {
             if (pelletDistance < world.getWorldScale() / 4F) {
                 this.isEaten = true;
                 pacman.addScore(10);
+                pacman.addPelletsEaten(1);
             }
         }
     }

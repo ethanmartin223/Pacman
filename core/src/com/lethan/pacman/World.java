@@ -23,6 +23,8 @@ public class World {
     private float animationTime;
     private int levelNumber;
     private Ghost clyde, inky, pinky, blinky;
+    private Fruit fruit;
+    private int fruitsSpawned;
 
     private TextureAtlas textureAtlas;
 
@@ -35,6 +37,7 @@ public class World {
         ghostList = new ArrayList<Ghost>();
 
         textureAtlas = atlas;
+        fruit = null;
         this.loadLevel(1);
         for (Wall w : wallList) w.determineSprite();
     }
@@ -53,6 +56,7 @@ public class World {
         powerPelletList.clear();
         ghostList.clear();
         levelNumber = level;
+        fruitsSpawned = 0;
         worldLayout = new int[][]{
                 {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,},
                 {1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1,},
@@ -104,7 +108,6 @@ public class World {
     public void spawnBlinky(float x, float y) {
         blinky = new Blinky(this, x, y);
         ghostList.add(blinky);
-
     }
     public void spawnPinky(float x, float y) {
         pinky = new Pinky(this, x, y);
@@ -117,6 +120,9 @@ public class World {
     public void spawnInky(float x, float y) {
         inky = new Inky(this, x, y);
         ghostList.add(inky);
+    }
+    public void spawnFruit() {
+        fruit = new Fruit(this, 13.5F, 23F);
     }
 
     public Ghost getBlinky() {
@@ -146,6 +152,10 @@ public class World {
         for (PowerPellet powerPellet: powerPelletList) {
             powerPellet.checkIfEaten();
             powerPellet.render(batch);
+        }
+        if (fruit != null) {
+            fruit.render(batch);
+            fruit.checkIfEaten();
         }
         player.render(batch);
         for (Ghost ghost : ghostList) {
@@ -191,6 +201,18 @@ public class World {
 
     public List<Ghost> getGhostList() {
         return ghostList;
+    }
+
+    public void destroyFruit() {
+        fruit = null;
+    }
+
+    public int getFruitsSpawned() {
+        return fruitsSpawned;
+    }
+
+    public void setFruitsSpawned(int i) {
+        this.fruitsSpawned = i;
     }
 }
 

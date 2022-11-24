@@ -38,6 +38,8 @@ public class Player {
     private int lives;
     private int[] nextDirection;
 
+    private int pelletsEaten;
+
 
     public Player(World world, float x, float y) {
         world.setPlayer(this);
@@ -56,6 +58,7 @@ public class Player {
         this.score = 0;
         this.lives = 4;
         this.nextDirection = Player.RIGHT;
+        this.pelletsEaten += 1;
 
         this.animationDirection = 1;
         this.sprites = new ArrayList<Sprite>();
@@ -63,6 +66,18 @@ public class Player {
             sprites.add(world.getTextureAtlas().createSprite("pacman_frame",i+1));
             sprites.get(i).setSize(world.getWorldScale(), world.getWorldScale());
             sprites.get(i).setOrigin(world.getWorldScale()/2F, world.getWorldScale()/2F);
+        }
+    }
+
+    public void checkIfShouldSpawnFruit() {
+        if (this.world.getFruitsSpawned() < 2) {
+            if (this.world.getFruitsSpawned() == 0 && this.pelletsEaten >= 70) {
+                this.world.setFruitsSpawned(1);
+                this.world.spawnFruit();
+            } else if (this.world.getFruitsSpawned() == 1 && this.pelletsEaten >= 170) {
+                this.world.setFruitsSpawned(2);
+                this.world.spawnFruit();
+            }
         }
     }
 
@@ -77,6 +92,7 @@ public class Player {
     public void move() {
         this.getInput();
         if (lastMoveDeltaTime >= secondsBetweenMove) {
+            checkIfShouldSpawnFruit();
             lastDirection = direction;
             direction = nextDirection;
             if (!willNotCollide()) direction = lastDirection;
@@ -211,5 +227,9 @@ public class Player {
 
     public int[] getDirection() {
         return direction;
+    }
+
+    public void addPelletsEaten(int i) {
+        pelletsEaten += i;
     }
 }

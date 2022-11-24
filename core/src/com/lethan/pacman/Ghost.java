@@ -144,7 +144,6 @@ public class Ghost {
         } else {
             currentAnimation = FRIGHTENED_ANIMATION;
         }
-
         spriteBatch.begin();
         spriteBatch.draw(currentAnimation.getKeyFrame(world.getAnimationTime(), true),
                 x + world.getWorldScale() * 1.25F, y + world.getWorldScale() * 1.25F, -world.getWorldScale() * 1.5F,
