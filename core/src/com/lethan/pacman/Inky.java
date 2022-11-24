@@ -10,11 +10,13 @@ public class Inky extends Ghost{
         this.mode = GhostAttackMode.SCATTER_MODE;
     }
 
-    public static double[] rotatePoint(float cx,float cy,float angle, float pointX,float pointY) {
-        double angleInRadians = angle * Math.PI / 180;
-        double lineLength = Math.sqrt(Math.pow((cx-pointX),2)+Math.pow((cy-pointY),2));
-        double endX = cx + lineLength * Math.cos(angleInRadians);
-        double endY = cy + lineLength * Math.sin(angleInRadians);
+    public static double[] rotatePoint(float cx,float cy, float pointX,float pointY) {
+        double endX = pointX-cx;
+        double endY = pointY-cy;
+        endX *= -1;
+        endY *= -1;
+        endX += cx;
+        endY += cy;
         return new double[] {endX, endY};
     }
 
