@@ -112,7 +112,6 @@ public class Player {
                     this.relX = (this.x) / this.world.getWorldScale();
                 }
                 this.bounds.set(this.x-this.world.getWorldScale()/2F,this.y-this.world.getWorldScale()/2F,(float)this.world.getWorldScale(),(float)this.world.getWorldScale());
-
             }
         } else lastMoveDeltaTime += Gdx.graphics.getDeltaTime();
     }
