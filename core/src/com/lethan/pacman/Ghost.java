@@ -21,7 +21,7 @@ public class Ghost {
     protected final String name;
     protected float lastMoveDeltaTime;
     protected double secondsBetweenMove;
-    protected float moveSpeed, normalMoveSpeed, slowedSpeed;
+    protected float moveSpeed;
     protected int[] lastDirection;
     protected Rectangle bounds;
     protected int[] direction;
@@ -94,8 +94,6 @@ public class Ghost {
         }
 
         this.moveSpeed = .1F;
-        this.normalMoveSpeed = moveSpeed;
-        this.slowedSpeed = moveSpeed*.5F;
 
         //scatter time settings
         this.scatterNumber = 0;
@@ -147,7 +145,6 @@ public class Ghost {
             else if (direction == Ghost.RIGHT) direction = LEFT;
         } else {
             mode = m;
-            moveSpeed *= 2;
         }
     }
 
@@ -271,9 +268,5 @@ public class Ghost {
     }
 
     public void update() {
-    }
-
-    public float getCurrentSlowedSpeed() {
-        return slowedSpeed;
     }
 }
