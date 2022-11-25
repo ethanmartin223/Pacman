@@ -20,6 +20,9 @@ public class Blinky extends Ghost{
             targetY = this.world.getPlayer().getRelY();
             moveTo((int) targetX, (int) targetY);
         }
+        if (mode == GhostAttackMode.FRIGHTENED) {
+            moveRandom();
+        }
 
     }
 }

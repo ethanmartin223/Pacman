@@ -21,7 +21,7 @@ public class Ghost {
     protected final String name;
     protected float lastMoveDeltaTime;
     protected double secondsBetweenMove;
-    protected float moveSpeed;
+    protected float moveSpeed, normalMoveSpeed, slowedSpeed;
     protected int[] lastDirection;
     protected Rectangle bounds;
     protected int[] direction;
@@ -52,13 +52,16 @@ public class Ghost {
     protected final static double[] LEVEL_TYPE_A_SCATTER_TIMES = new double[] {7,7,5,5};
     protected final static double[] LEVEL_TYPE_B_SCATTER_TIMES = new double[] {7,7,5,1.0/60};
     protected final static double[] LEVEL_TYPE_C_SCATTER_TIMES = new double[] {5,5,5,1.0/60};
-
     protected final static double[] LEVEL_TYPE_A_CHASE_TIMES = new double[] {20,20,20,-1};
     protected final static double[] LEVEL_TYPE_B_CHASE_TIMES = new double[] {20,20,1033,-1};
     protected final static double[] LEVEL_TYPE_C_CHASE_TIMES = new double[] {20,20,1037,-1};
 
+    protected final static int[] FRIGHTENED_TIME_BY_LEVEL = new int[] {6,5,4,3,5,5,2,2,1,5,2,2,1,3,1,1,0,1,0};
+
     protected double[] currentScatterTimes;
     protected double[] currentChaseTimes;
+    protected float timeInFrightenedMode;
+    protected float totalFrightenedModeTime;
 
     public Ghost(World world, float x, float y) {
         this.name = this.getClass().getSimpleName().toLowerCase();
@@ -69,7 +72,7 @@ public class Ghost {
         this.y = y * world.getWorldScale();
         this.x = x * world.getWorldScale();
         this.sprites = null;
-        this.moveSpeed = .1F;
+
         this.currentSprite = name + "_idle";
         this.bounds = new Rectangle(this.x - this.world.getWorldScale() / 2F, this.y - this.world.getWorldScale() / 2F,
                 (float) this.world.getWorldScale(), (float) this.world.getWorldScale());
@@ -90,12 +93,20 @@ public class Ghost {
             this.currentScatterTimes = LEVEL_TYPE_C_SCATTER_TIMES;
         }
 
+        this.moveSpeed = .1F;
+        this.normalMoveSpeed = moveSpeed;
+        this.slowedSpeed = moveSpeed*.5F;
+
         //scatter time settings
         this.scatterNumber = 0;
         this.timeSinceLastScatter = 0;
         this.timeInScatterMode = 0;
         this.totalScatterTimeDuration = currentScatterTimes[scatterNumber];
         this.nextScatterTime = currentChaseTimes[scatterNumber];
+
+        //frightened time
+        this.timeInFrightenedMode = 0;
+        this.totalFrightenedModeTime = world.getLevelNumber()<19?FRIGHTENED_TIME_BY_LEVEL[world.getLevelNumber()-1]:0;
 
         //anima
         UP_ANIMATION = new Animation<TextureRegion>(0.1f, world.getTextureAtlas().findRegions(name+"_up"));
@@ -119,16 +130,24 @@ public class Ghost {
                 this.totalScatterTimeDuration = currentScatterTimes[scatterNumber];
                 setMode(GhostAttackMode.SICKO_MODE);
             } else timeInScatterMode += Gdx.graphics.getDeltaTime();
+        } else if (mode == GhostAttackMode.FRIGHTENED) {
+            if (timeInFrightenedMode >= totalFrightenedModeTime) {
+                timeInFrightenedMode = 0;
+                setMode(GhostAttackMode.SICKO_MODE);
+            } else timeInFrightenedMode += Gdx.graphics.getDeltaTime();
         }
     }
 
     public void setMode(GhostAttackMode m) {
-        mode = m;
         if (mode != GhostAttackMode.FRIGHTENED) {
+            mode = m;
             if (direction == Ghost.UP) direction = DOWN;
             else if (direction == Ghost.DOWN) direction = UP;
             else if (direction == Ghost.LEFT) direction = RIGHT;
             else if (direction == Ghost.RIGHT) direction = LEFT;
+        } else {
+            mode = m;
+            moveSpeed *= 2;
         }
     }
 
@@ -204,6 +223,29 @@ public class Ghost {
         } else lastMoveDeltaTime += Gdx.graphics.getDeltaTime();
     }
 
+    public void moveRandom() {
+        determineMode();
+        if (lastMoveDeltaTime >= secondsBetweenMove) {
+            lastMoveDeltaTime = 0;
+            int[] bestDirection = Ghost.IDLE;
+            double bestScore = Integer.MAX_VALUE;
+            for (int[] dir : VALID_MOVES) {
+                if (willNotCollide(this.x, this.y, dir)) {
+                    if (bestScore > Math.random() && !willCauseTurnAround(dir)) {
+                        bestDirection = dir;
+                        bestScore = Math.random();
+                    }
+                }
+            }
+            this.direction = bestDirection;
+            relX = (float) round(relX+direction[0]*moveSpeed,2);
+            relY = (float) round(relY+direction[1]*moveSpeed,2);
+            this.x = ((relX) * this.world.getWorldScale());
+            this.y = ((relY) * this.world.getWorldScale());
+            this.bounds.set(this.x, this.y, (float) this.world.getWorldScale(), (float) this.world.getWorldScale());
+        } else lastMoveDeltaTime += Gdx.graphics.getDeltaTime();
+    }
+
     public float getY() {
         return y;
     }
@@ -220,6 +262,18 @@ public class Ghost {
         return relY;
     }
 
+    public void setMoveSpeed(float i) {
+        moveSpeed = i;
+    }
+
+    public float getMoveSpeed() {
+        return moveSpeed;
+    }
+
     public void update() {
+    }
+
+    public float getCurrentSlowedSpeed() {
+        return slowedSpeed;
     }
 }

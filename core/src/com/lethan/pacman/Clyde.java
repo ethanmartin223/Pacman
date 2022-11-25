@@ -26,6 +26,9 @@ public class Clyde extends Ghost{
             targetX = 1;
             targetY = 31;
         }
+        if (mode == GhostAttackMode.FRIGHTENED) {
+            moveRandom();
+        }
     }
 
 }

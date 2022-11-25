@@ -39,6 +39,9 @@ public class Inky extends Ghost{
             targetX = 31;
             targetY =32;
         }
+        if (mode == GhostAttackMode.FRIGHTENED) {
+            moveRandom();
+        }
     }
 
 }

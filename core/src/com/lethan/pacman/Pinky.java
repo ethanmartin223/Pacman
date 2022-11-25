@@ -22,5 +22,8 @@ public class Pinky extends Ghost{
             targetX = 3;
             targetY = -4;
         }
+        if (mode == GhostAttackMode.FRIGHTENED) {
+            moveRandom();
+        }
     }
 }

@@ -51,6 +51,7 @@ public class PowerPellet{
                 pacman.addScore(50);
                 for (Ghost g : world.getGhostList()) {
                     g.setMode(GhostAttackMode.FRIGHTENED);
+                    g.setMoveSpeed(g.getCurrentSlowedSpeed());
                 }
             }
         }

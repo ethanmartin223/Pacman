@@ -13,6 +13,8 @@ import com.badlogic.gdx.math.Rectangle;
 import java.util.ArrayList;
 
 public class Player {
+    public static float MOVE_SPEED = .1F;
+
     private static final int[] UP = new int[] {0,-1};
     private static final int[] DOWN = new int[] {0,1};
     private static final int[] RIGHT = new int[] {1,0};
@@ -26,7 +28,6 @@ public class Player {
     private float lastMoveDeltaTime;
     private double secondsBetweenMove;
     private World world;
-    private static float MOVE_SPEED = 2.5F;
     private float relX, relY;
     private int[] lastDirection;
     private Rectangle bounds;
@@ -99,10 +100,10 @@ public class Player {
             if (this.willNotCollide()) {
                 lastMoveDeltaTime = 0;
                 lastDirection = this.direction;
-                this.x += this.direction[0] * MOVE_SPEED;
-                this.y += this.direction[1] * MOVE_SPEED;
-                this.relX += (this.direction[0] * MOVE_SPEED) / this.world.getWorldScale();
-                this.relY += (this.direction[1] * MOVE_SPEED) / this.world.getWorldScale();
+                this.x += this.direction[0] * MOVE_SPEED*this.world.getWorldScale();
+                this.y += this.direction[1] * MOVE_SPEED*this.world.getWorldScale();
+                this.relX += (this.direction[0] * MOVE_SPEED);
+                this.relY += (this.direction[1] * MOVE_SPEED);
                 if (this.x < -this.world.getWorldScale()) {
                     this.x = world.getLayout()[0].length*world.getWorldScale();
                     this.relX = (this.x) / this.world.getWorldScale();
